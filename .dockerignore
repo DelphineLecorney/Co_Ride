@@ -1,0 +1,63 @@
+# Fichiers et dossiers .NET
+**/bin/
+**/obj/
+**/out/
+**/*.user
+**/*.suo
+**/*.cache
+**/*.csproj.user
+**/*.dbmdl
+
+# Packages NuGet
+**/*.nupkg
+**/packages/
+
+# Fichiers de build
+**/[Bb]uild[Ll]og.*
+**/*.VisualState.xml
+**/.vs/
+
+# Résultats de tests
+**/[Tt]est[Rr]esult*/
+**/*.trx
+**/*.coverage
+
+# Docker
+**/.dockerignore
+**/docker-compose*.yml
+**/Dockerfile*
+**/.git/
+**/.gitignore
+**/.github/
+
+# IDE
+**/.vscode/
+**/.idea/
+**/*.swp
+**/*.swo
+
+# OS
+**/.DS_Store
+**/Thumbs.db
+
+# Documentation
+**/README.md
+**/LICENSE
+**/*.md
+
+# Fichiers temporaires
+**/temp/
+**/tmp/
+**/*.log
+
+# Node modules (si Blazor utilise npm)
+**/node_modules/
+**/wwwroot/lib/
+
+# Fichiers de déploiement
+**/deployments/
+**/scripts/
+
+# Environment files
+.env
+.env.*

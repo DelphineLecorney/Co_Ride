@@ -1,0 +1,318 @@
+version: "3.9"
+
+services:
+  # ===========================
+  # BASES DE DONNÉES
+  # ===========================
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: covoiturage-postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-postgres.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - covoiturage-network
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: covoiturage-sqlserver
+    env_file:
+      - .env
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${SQLSERVER_SA_PASSWORD}
+      MSSQL_PID: Developer
+    ports:
+      - "${SQLSERVER_PORT}:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SQLSERVER_SA_PASSWORD} -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - covoiturage-network
+
+  mongodb:
+    image: mongo:7
+    container_name: covoiturage-mongodb
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE}
+    ports:
+      - "${MONGODB_PORT}:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - covoiturage-network
+
+  # ===========================
+  # CACHE & MESSAGING
+  # ===========================
+
+  redis:
+    image: redis:7-alpine
+    container_name: covoiturage-redis
+    env_file:
+      - .env
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - covoiturage-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: covoiturage-rabbitmq
+    env_file:
+      - .env
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    ports:
+      - "${RABBITMQ_PORT}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT}:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - covoiturage-network
+
+  # ===========================
+  # MONITORING
+  # ===========================
+
+  seq:
+    image: datalust/seq:latest
+    container_name: covoiturage-seq
+    env_file:
+      - .env
+    environment:
+      ACCEPT_EULA: "Y"
+    ports:
+      - "${SEQ_PORT}:80"
+    volumes:
+      - seq_data:/data
+    networks:
+      - covoiturage-network
+
+  # ===========================
+  # MICROSERVICES .NET
+  # ===========================
+
+  identity-api:
+    build:
+      context: .
+      dockerfile: src/Services/Identity.Service/Identity.API/Dockerfile
+    container_name: identity-api
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ConnectionStrings__DefaultConnection: "Server=${SQLSERVER_HOST};Database=IdentityDB;User Id=sa;Password=${SQLSERVER_SA_PASSWORD};TrustServerCertificate=True"
+      JwtSettings__SecretKey: ${JWT_SECRET_KEY}
+      JwtSettings__Issuer: ${JWT_ISSUER}
+      JwtSettings__Audience: ${JWT_AUDIENCE}
+      Seq__ServerUrl: "http://${SEQ_HOST}:${SEQ_PORT}"
+    ports:
+      - "${IDENTITY_API_PORT}:80"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      seq:
+        condition: service_started
+    networks:
+      - covoiturage-network
+    restart: on-failure
+
+  trip-api:
+    build:
+      context: .
+      dockerfile: src/Services/Trip.Service/Trip.API/Dockerfile
+    container_name: trip-api
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ConnectionStrings__MartenConnection: "Host=${POSTGRES_HOST};Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      RabbitMQ__Host: ${RABBITMQ_HOST}
+      RabbitMQ__Username: ${RABBITMQ_DEFAULT_USER}
+      RabbitMQ__Password: ${RABBITMQ_DEFAULT_PASS}
+      Redis__Configuration: "${REDIS_HOST}:6379"
+      Seq__ServerUrl: "http://${SEQ_HOST}:${SEQ_PORT}"
+    ports:
+      - "${TRIP_API_PORT}:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - covoiturage-network
+    restart: on-failure
+
+  booking-api:
+    build:
+      context: .
+      dockerfile: src/Services/Booking.Service/Booking.API/Dockerfile
+    container_name: booking-api
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ConnectionStrings__DefaultConnection: "Server=${SQLSERVER_HOST};Database=BookingDB;User Id=sa;Password=${SQLSERVER_SA_PASSWORD};TrustServerCertificate=True"
+      RabbitMQ__Host: ${RABBITMQ_HOST}
+      RabbitMQ__Username: ${RABBITMQ_DEFAULT_USER}
+      RabbitMQ__Password: ${RABBITMQ_DEFAULT_PASS}
+      Redis__Configuration: "${REDIS_HOST}:6379"
+      Seq__ServerUrl: "http://${SEQ_HOST}:${SEQ_PORT}"
+    ports:
+      - "${BOOKING_API_PORT}:80"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      trip-api:
+        condition: service_started
+    networks:
+      - covoiturage-network
+    restart: on-failure
+
+  notification-api:
+    build:
+      context: .
+      dockerfile: src/Services/Notification.Service/Notification.API/Dockerfile
+    container_name: notification-api
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      MongoDB__ConnectionString: "mongodb://${MONGODB_ROOT_USERNAME}:${MONGODB_ROOT_PASSWORD}@${MONGODB_HOST}:27017"
+      MongoDB__DatabaseName: ${MONGODB_DATABASE}
+      RabbitMQ__Host: ${RABBITMQ_HOST}
+      RabbitMQ__Username: ${RABBITMQ_DEFAULT_USER}
+      RabbitMQ__Password: ${RABBITMQ_DEFAULT_PASS}
+      Seq__ServerUrl: "http://${SEQ_HOST}:${SEQ_PORT}"
+    ports:
+      - "${NOTIFICATION_API_PORT}:80"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - covoiturage-network
+    restart: on-failure
+
+  # ===========================
+  # GATEWAY
+  # ===========================
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: src/Gateways/API.Gateway/Dockerfile
+    container_name: api-gateway
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      Services__Identity: "http://identity-api"
+      Services__Trip: "http://trip-api"
+      Services__Booking: "http://booking-api"
+      Services__Notification: "http://notification-api"
+      Seq__ServerUrl: "http://${SEQ_HOST}:${SEQ_PORT}"
+    ports:
+      - "${API_GATEWAY_PORT}:80"
+    depends_on:
+      - identity-api
+      - trip-api
+      - booking-api
+      - notification-api
+    networks:
+      - covoiturage-network
+    restart: on-failure
+
+  # ===========================
+  # FRONTEND
+  # ===========================
+
+  blazor-client:
+    build:
+      context: .
+      dockerfile: src/Web/Blazor.Client/Dockerfile
+    container_name: blazor-client
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ApiGateway__BaseUrl: "http://api-gateway"
+    ports:
+      - "${BLAZOR_CLIENT_PORT}:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - covoiturage-network
+    restart: on-failure
+
+# ===========================
+# VOLUMES
+# ===========================
+
+volumes:
+  postgres_data:
+  sqlserver_data:
+  mongodb_data:
+  redis_data:
+  rabbitmq_data:
+  seq_data:
+
+# ===========================
+# NETWORKS
+# ===========================
+
+networks:
+  covoiturage-network:
+    driver: bridge
