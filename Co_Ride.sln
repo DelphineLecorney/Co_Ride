@@ -102,10 +102,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "�
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.env = .env
+		.env.example = .env.example
 		.gitignore = .gitignore
 		docker-compose.override.yml = docker-compose.override.yml
 		docker-compose.yml = docker-compose.yml
-		env.example = env.example
 		README.md = README.md
 	EndProjectSection
 EndProject
