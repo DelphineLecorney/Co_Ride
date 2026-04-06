@@ -1,10 +1,10 @@
-
 services:
   identity-api:
     build:
       context: .
       dockerfile: src/Services/Identity.Service/Identity.API/Dockerfile
-      target: development
+    env_file:
+      - .env
     volumes:
       - ./src/Services/Identity.Service/Identity.API:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
@@ -16,7 +16,8 @@ services:
     build:
       context: .
       dockerfile: src/Services/Trip.Service/Trip.API/Dockerfile
-      target: development
+    env_file:
+      - .env
     volumes:
       - ./src/Services/Trip.Service/Trip.API:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
@@ -28,7 +29,8 @@ services:
     build:
       context: .
       dockerfile: src/Services/Booking.Service/Booking.API/Dockerfile
-      target: development
+    env_file:
+      - .env
     volumes:
       - ./src/Services/Booking.Service/Booking.API:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
@@ -40,7 +42,8 @@ services:
     build:
       context: .
       dockerfile: src/Services/Notification.Service/Notification.API/Dockerfile
-      target: development
+    env_file:
+      - .env
     volumes:
       - ./src/Services/Notification.Service/Notification.API:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
@@ -52,7 +55,8 @@ services:
     build:
       context: .
       dockerfile: src/Gateways/API.Gateway/Dockerfile
-      target: development
+    env_file:
+      - .env
     volumes:
       - ./src/Gateways/API.Gateway:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
@@ -64,7 +68,8 @@ services:
     build:
       context: .
       dockerfile: src/Web/Blazor.Client/Dockerfile
-      target: development
+    env_file:
+      - .env
     volumes:
       - ./src/Web/Blazor.Client:/app
       - ~/.nuget/packages:/root/.nuget/packages:ro
