@@ -24,6 +24,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{7203E72C-DCCA-4554-B01F-86D0175EA171}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Trip.API", "Trip.API", "{60551650-8768-4F53-9361-69FDB9DC2322}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Trip.Service\Trip.API\Dockerfile = src\Services\Trip.Service\Trip.API\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Trip.Application", "Trip.Application", "{EB28E8E4-6C41-4903-9D46-35FA0959B716}"
 EndProject
@@ -34,10 +37,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Trip.Service", "Trip.Service", "{ED4FBE94-CFA3-4388-990F-F396CB366BB4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D2EEF483-52B4-4B5D-AAAD-215B5D882F1A}"
+	ProjectSection(SolutionItems) = preProject
+		src\Web\Blazor.Client\Dockerfile = src\Web\Blazor.Client\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity.Service", "Identity.Service", "{90896360-2FCE-4679-9555-25B34BE6F012}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity.API", "Identity.API", "{2FC6256B-8958-4D1F-BA2A-C4DEBD850029}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Identity.Service\Identity.API\Dockerfile = src\Services\Identity.Service\Identity.API\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity.Infrastructure", "Identity.Infrastructure", "{00AD7367-8DC4-4B46-B712-90FB2DCFC39C}"
 EndProject
@@ -64,6 +73,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.API", "src\Services\Notification.Service\Notification.API\Notification.API.csproj", "{127F1A21-2454-86D0-9A49-650A2D20CB8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification.API", "Notification.API", "{48346828-419A-459C-824C-055B215D9A7A}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Notification.Service\Notification.API\Dockerfile = src\Services\Notification.Service\Notification.API\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Booking.Service", "Booking.Service", "{C3FE8D53-A29E-4F17-883D-8D21440D403F}"
 EndProject
@@ -80,12 +92,26 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Booking.Domain", "Booking.Domain", "{B4EEE9DA-43BC-43CC-BF05-ECA6D660E9FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Booking.API", "Booking.API", "{55BBED02-DFBC-4743-BC9B-97835D6FD30D}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\Booking.Service\Booking.API\Dockerfile = src\Services\Booking.Service\Booking.API\Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Booking.Application", "Booking.Application", "{93966CBE-8892-42A5-ACE8-E09F7B7D6F7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{9C8CB701-102D-CF49-A3E0-89AC09D42C2C}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.env = .env
+		.gitignore = .gitignore
+		docker-compose.override.yml = docker-compose.override.yml
+		docker-compose.yml = docker-compose.yml
+		env.example = env.example
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API.Gateway", "API.Gateway", "{BAF5FD8B-7692-4261-9B34-2D6039077353}"
+	ProjectSection(SolutionItems) = preProject
+		src\Gateways\API.Gateway\Dockerfile = src\Gateways\API.Gateway\Dockerfile
 	EndProjectSection
 EndProject
 Global
@@ -297,7 +323,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{90298CBA-BD6F-3A0A-69D5-97CAD7B05E7E} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{AFA77B0E-383A-4D17-BBE4-EF88DBED1459} = {7F8C8151-8143-4E90-9826-3B74B5129E75}
-		{CDD4DAE1-09CD-40D4-AC57-7D812CB5752F} = {FD29EB75-2572-480D-A08B-DF401FEEB64C}
+		{CDD4DAE1-09CD-40D4-AC57-7D812CB5752F} = {BAF5FD8B-7692-4261-9B34-2D6039077353}
 		{3580F514-85B6-49F9-A3F6-52EF3BD4F99D} = {60551650-8768-4F53-9361-69FDB9DC2322}
 		{41FBE4F0-210B-484D-86EC-D1219515BD51} = {D2EEF483-52B4-4B5D-AAAD-215B5D882F1A}
 		{7F8C8151-8143-4E90-9826-3B74B5129E75} = {90298CBA-BD6F-3A0A-69D5-97CAD7B05E7E}
@@ -333,6 +359,7 @@ Global
 		{B4EEE9DA-43BC-43CC-BF05-ECA6D660E9FD} = {C3FE8D53-A29E-4F17-883D-8D21440D403F}
 		{55BBED02-DFBC-4743-BC9B-97835D6FD30D} = {C3FE8D53-A29E-4F17-883D-8D21440D403F}
 		{93966CBE-8892-42A5-ACE8-E09F7B7D6F7A} = {C3FE8D53-A29E-4F17-883D-8D21440D403F}
+		{BAF5FD8B-7692-4261-9B34-2D6039077353} = {FD29EB75-2572-480D-A08B-DF401FEEB64C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94A1E8E7-64DF-4381-9AEC-C6CA3DCF8E05}
