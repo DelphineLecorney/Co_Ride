@@ -13,22 +13,22 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Home.md",
+                "file": "03 - Documentation/Plugins.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Home"
+              "title": "Plugins"
             }
           }
         ]
       },
       {
-        "id": "42f581f0b6ae0a4b",
+        "id": "d96c1bdfb9600570",
         "type": "tabs",
         "children": [
           {
-            "id": "c66668ccb470b3af",
+            "id": "524a62c8eb126b30",
             "type": "leaf",
             "state": {
               "type": "reveal-preview-view",
@@ -212,12 +212,12 @@
       "obsidian-advanced-slides:Show Slide Preview": false
     }
   },
-  "active": "c66668ccb470b3af",
+  "active": "524a62c8eb126b30",
   "lastOpenFiles": [
+    "Home.md",
     "03 - Documentation/Plugins.md",
     "00 - Vision/Contexte.md",
     "00 - Vision/Vision-Produit.md",
-    "Home.md",
     "Excalidraw/Drawing 2026-04-08 17.36.18.excalidraw.md",
     "Sans titre.md",
     "Excalidraw/Sans titre.canvas",
