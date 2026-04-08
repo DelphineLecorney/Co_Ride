@@ -1,5 +1,9 @@
 [
   "dataview",
   "obsidian-kanban",
-  "templater-obsidian"
+  "templater-obsidian",
+  "table-editor-obsidian",
+  "obsidian-advanced-slides",
+  "obsidian-link-converter",
+  "obsidian-excalidraw-plugin"
 ]
