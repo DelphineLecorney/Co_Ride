@@ -1,0 +1,78 @@
+services:
+  identity-api:
+    build:
+      context: .
+      dockerfile: src/Services/Identity.Service/Identity.API/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./src/Services/Identity.Service/Identity.API:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+
+  trip-api:
+    build:
+      context: .
+      dockerfile: src/Services/Trip.Service/Trip.API/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./src/Services/Trip.Service/Trip.API:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+
+  booking-api:
+    build:
+      context: .
+      dockerfile: src/Services/Booking.Service/Booking.API/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./src/Services/Booking.Service/Booking.API:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+
+  notification-api:
+    build:
+      context: .
+      dockerfile: src/Services/Notification.Service/Notification.API/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./src/Services/Notification.Service/Notification.API:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: src/Gateways/API.Gateway/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./src/Gateways/API.Gateway:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+
+  blazor-client:
+    build:
+      context: .
+      dockerfile: src/Web/Blazor.Client/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./src/Web/Blazor.Client:/app
+      - ~/.nuget/packages:/root/.nuget/packages:ro
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
