@@ -24,11 +24,11 @@
         ]
       },
       {
-        "id": "b5408836f512d758",
+        "id": "42f581f0b6ae0a4b",
         "type": "tabs",
         "children": [
           {
-            "id": "49ca000e532922c1",
+            "id": "c66668ccb470b3af",
             "type": "leaf",
             "state": {
               "type": "reveal-preview-view",
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Home.md",
+                "file": "00 - Vision/Contexte.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -120,7 +120,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Rétrolien pour Home"
+              "title": "Rétrolien pour Contexte"
             }
           },
           {
@@ -194,7 +194,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 206.5
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -212,14 +212,15 @@
       "obsidian-advanced-slides:Show Slide Preview": false
     }
   },
-  "active": "49ca000e532922c1",
+  "active": "c66668ccb470b3af",
   "lastOpenFiles": [
     "03 - Documentation/Plugins.md",
-    "Excalidraw/Drawing 2026-04-08 17.36.18.excalidraw.md",
+    "00 - Vision/Contexte.md",
+    "00 - Vision/Vision-Produit.md",
     "Home.md",
+    "Excalidraw/Drawing 2026-04-08 17.36.18.excalidraw.md",
     "Sans titre.md",
     "Excalidraw/Sans titre.canvas",
-    "00 - Vision/Contexte.md",
     "03 - Documentation/Drawing 2026-04-08 16.44.31.excalidraw.md",
     "Excalidraw/Drawing 2026-04-08 16.41.48.excalidraw.md",
     "Excalidraw",
