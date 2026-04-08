@@ -2,7 +2,7 @@
 
 
 Ce dossier documente les plugins utilisés pour organiser, visualiser et enrichir la documentation du projet **Co_Ride**.
-%% ## <span style="color:#3A7AFE;">Plugins principaux</span> %%
+
 
 ---
 > [!NOTE]

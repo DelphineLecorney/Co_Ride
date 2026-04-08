@@ -8,10 +8,11 @@
 
 ## 🎯 Démarrage rapide
 
-`1. **[Contexte](Vision/Context.md)** → Comprendre pourquoi Co_Ride existe`
+1. **[Contexte](./00%20-%20Vision/Contexte.md)** : Comprendre pourquoi Co_Ride existe.
+2. **[Plugins](./03%20-%20Documentation/Plugins.md)**  : Liste des outils utilisés pour la doc.
 
 
 ---
 **Tags principaux** : 
 
-`#microservices`
+`#microservices` `#event-sourcing` `#ddd` `#cqrs` `#marten` `#masstransit` `#blazor`
