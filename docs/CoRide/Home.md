@@ -19,28 +19,27 @@
 
 
 ```mermaid
+graph LR
 
-`graph LR`
+A[Blazor WASM] --> B[YARP Gateway]
 
-`A[Blazor WASM] --> B[YARP Gateway]`
+B --> C[Identity API]
 
-`B --> C[Identity API]`
+B --> D[Trip API]
 
-`B --> D[Trip API]`
+B --> E[Booking API]
 
-`B --> E[Booking API]`
+D -.Events.-> F[(RabbitMQ)]
 
-`D -.Events.-> F[(RabbitMQ)]`
+F -.-> E
 
-`F -.-> E`
+F -.-> G[Notification]
 
-`F -.-> G[Notification]`
+style D fill:#4CAF50
 
-`style D fill:#4CAF50`
+style E fill:#2196F3
 
-`style E fill:#2196F3`
-
-`style F fill:#FF9800`
+style F fill:#FF9800
 ```
 
 
