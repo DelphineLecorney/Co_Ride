@@ -27,7 +27,8 @@ Ce dossier documente les plugins utilisés pour organiser, visualiser et enrichi
 
 ---
 
-> [!WARNING]  **Note importante**  
-> - Ces plugins ne font pas partie du code Co_Ride. 
-> - Ils servent uniquement à **structurer et enrichir la documentation**.
+> [!WARNING]
+> **Note importante**
+> * Ces plugins ne font pas partie du code Co_Ride.
+> * Ils servent uniquement à structurer et enrichir la documentation.
 
