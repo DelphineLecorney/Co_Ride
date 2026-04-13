@@ -1,4 +1,5 @@
 ﻿
+using Identity.Application.DTOs;
 using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Microsoft.Extensions.Configuration;
@@ -67,6 +68,29 @@ namespace Identity.Infrastructure.Services
                 return Convert.ToBase64String(randomNumber);
             }
         }
+
+        /// <summary>
+        /// Combine la génération du token d'accès et du token de 
+        /// rafraîchissement pour un utilisateur donné et retourne 
+        /// un objet TokenDto contenant les deux tokens et la date 
+        /// d'expiration du token d'accès.
+        /// </summary>
+        /// <param name="user">L'utilisateur pour lequel générer les tokens.</param>
+        /// <returns>Un objet TokenDto contenant le token d'accès, 
+        /// le token de rafraîchissement et la date d'expiration du token d'accès.</returns>
+        public TokenDto GenerateToken(ApplicationUser user)
+        {
+            var accessToken = GenerateAccessToken(user);
+            var refreshToken = GenerateRefreshToken();
+
+            return new TokenDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(30)
+            };
+        }
+
 
         /// <summary>
         /// Valide un JWT expiré et renvoie le principal associé aux revendications si 

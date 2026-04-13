@@ -1,4 +1,5 @@
 ﻿
+using Identity.Application.DTOs;
 using Identity.Domain.Entities;
 using System.Security.Claims;
 
@@ -10,6 +11,7 @@ namespace Identity.Application.Interfaces
     /// </summary>
     public interface IJwtTokenService
     {
+        TokenDto GenerateToken(ApplicationUser user);
         string GenerateAccessToken(ApplicationUser user);
         string GenerateRefreshToken();
         ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);

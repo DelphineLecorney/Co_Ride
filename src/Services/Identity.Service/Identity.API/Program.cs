@@ -1,32 +1,16 @@
 using Identity.Application.Interfaces;
 using Identity.Application.Mappings;
-using Identity.Domain.Entities;
+using Identity.Infrastructure;
 using Identity.Infrastructure.Data;
 using Identity.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database
-builder.Services.AddDbContext<IdentityDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 // Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
-{
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredLength = 8;
-})
-.AddEntityFrameworkStores<IdentityDbContext>()
-.AddDefaultTokenProviders();
+builder.Services.AddIdentityInfrastructure(builder.Configuration);
 
 // JWT Authentication
 var jwtKey = builder.Configuration["JwtSettings:SecretKey"]!;

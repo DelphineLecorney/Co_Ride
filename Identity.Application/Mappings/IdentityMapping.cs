@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Identity.Application.Commands.Login;
+using Identity.Application.Commands.Register;
 using Identity.Application.DTOs;
 using Identity.Domain.Entities;
 using Shared.Contracts.DTOs.Identity;
@@ -14,15 +16,20 @@ namespace Identity.Application.Mappings
     {
         public IdentityMapping()
         {
-            // CreateMap<Source, Destination>();
             CreateMap<ApplicationUser, UserInternalDto>();
-
             CreateMap<ApplicationUser, UserDto>();
+            CreateMap<ApplicationUser, AuthResultDto>()
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<RegisterCommand, ApplicationUser>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.PhoneNumber));
 
-            CreateMap<ApplicationUser, AuthResultDto>();
+            CreateMap<LoginRequest, LoginCommand>();
+            CreateMap<RegisterRequest, RegisterCommand>();
         }
     }
 }
