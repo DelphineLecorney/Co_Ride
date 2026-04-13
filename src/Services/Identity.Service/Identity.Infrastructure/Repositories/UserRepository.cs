@@ -1,6 +1,7 @@
 ﻿using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using Identity.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Repositories
@@ -12,80 +13,105 @@ namespace Identity.Infrastructure.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly IdentityDbContext _context;
-        public UserRepository(IdentityDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public UserRepository(IdentityDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public Task<int> CountAsync(CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
 
+        public async Task<ApplicationUser?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+            => await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id && !u.IsDeleted, cancellationToken);
+
+        public async Task<ApplicationUser?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            var normalized = _userManager.NormalizeEmail(email);
+            return await _context.Users.AsNoTracking()
+                .FirstOrDefaultAsync(u => u.NormalizedEmail == normalized && !u.IsDeleted, cancellationToken);
         }
 
-        public Task CreateAsync(ApplicationUser user, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<ApplicationUser>> GetAllAsync(int page, int pageSize, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await _context.Users
+                .AsNoTracking()
+                .Where(u => !u.IsDeleted)
+                .OrderBy(u => u.LastName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
         }
 
-        public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<ApplicationUser>> GetByRoleAsync(string role, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var users = await _userManager.GetUsersInRoleAsync(role);
+            return users.Where(u => !u.IsDeleted).ToList().AsReadOnly();
         }
 
-        public Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<ApplicationUser>> SearchAsync(string? term, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(term)) return new List<ApplicationUser>();
+            term = term.ToUpper();
+
+            return await _context.Users
+                .AsNoTracking()
+                .Where(u => !u.IsDeleted && (u.NormalizedEmail.Contains(term) || u.LastName.ToUpper().Contains(term)))
+                .ToListAsync(cancellationToken);
         }
 
-        public Task<bool> FullNameExistsAsync(string firstName, string lastName, CancellationToken cancellationToken = default)
+        public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var normalized = _userManager.NormalizeEmail(email);
+            return await _context.Users.AnyAsync(u => u.NormalizedEmail == normalized, cancellationToken);
         }
 
-        public Task<IReadOnlyList<ApplicationUser>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<int> CountAsync(CancellationToken cancellationToken = default)
+            => await _context.Users.CountAsync(u => !u.IsDeleted, cancellationToken);
+
+
+        public async Task CreateAsync(ApplicationUser user, string password)
         {
-            throw new NotImplementedException();
+            var result = await _userManager.CreateAsync(user, password);
+            CheckIdentityResult(result, "Création");
         }
 
-        public Task<ApplicationUser?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(ApplicationUser user)
         {
-            throw new NotImplementedException();
+            var result = await _userManager.UpdateAsync(user);
+            CheckIdentityResult(result, "Mise à jour");
         }
 
-        public Task<ApplicationUser?> GetByFullNameAsync(string firstName, string lastName, CancellationToken cancellationToken = default)
+
+        public async Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+            if (user != null)
+            {
+                user.IsDeleted = true;
+                user.DeletedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync(cancellationToken);
+            }
         }
 
-        public Task<ApplicationUser?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task HardDeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+            if (user != null)
+            {
+                var result = await _userManager.DeleteAsync(user);
+                CheckIdentityResult(result, "Suppression définitive");
+            }
         }
 
-        public Task<IReadOnlyList<ApplicationUser>> GetByRoleAsync(string role, CancellationToken cancellationToken = default)
+        private static void CheckIdentityResult(IdentityResult result, string action)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<ApplicationUser>> SearchAsync(string? searchTerm = null, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task SoftDeleteAsync(Guid id, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(ApplicationUser user, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                throw new InvalidOperationException($"Échec de la {action} : {errors}");
+            }
         }
     }
+
 }

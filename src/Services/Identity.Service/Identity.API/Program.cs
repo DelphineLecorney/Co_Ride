@@ -35,6 +35,8 @@ builder.Services.AddAuthentication(options =>
 
 // Services
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 builder.Services.AddAutoMapper(config =>
 {
