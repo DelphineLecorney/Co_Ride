@@ -15,8 +15,9 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\..\Identity.Application\Identity.Application.csproj" />
-		<ProjectReference Include="..\..\..\..\Identity.Domain\Identity.Domain.csproj" />
+		<ProjectReference Include="..\..\..\BuildingBlocks\Shared.Messaging\Shared.Messaging.csproj" />
+		<ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj" />
+		<ProjectReference Include="..\Identity.Application\Identity.Application.csproj" />
 	</ItemGroup>
 
 </Project>

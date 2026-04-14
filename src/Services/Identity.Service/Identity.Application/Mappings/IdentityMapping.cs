@@ -17,9 +17,18 @@ namespace Identity.Application.Mappings
         public IdentityMapping()
         {
             CreateMap<ApplicationUser, UserInternalDto>();
-            CreateMap<ApplicationUser, UserDto>();
-            CreateMap<ApplicationUser, AuthResultDto>()
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<ApplicationUser, UserDto>()
+            .ForCtorParam("Roles", opt => opt.MapFrom((src, ctx) =>
+            {
+                if (ctx.Items.TryGetValue("Roles", out var rolesObj) && rolesObj is List<string> roles)
+                {
+                    return roles;
+                }
+                return new List<string>();
+            }));
+
+            CreateMap<ApplicationUser, AuthResponse>()
+            .ForMember(dest => dest.User.Id, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<RegisterCommand, ApplicationUser>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))

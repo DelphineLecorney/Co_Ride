@@ -52,11 +52,14 @@ namespace Identity.Infrastructure.Repositories
         public async Task<IReadOnlyList<ApplicationUser>> SearchAsync(string? term, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(term)) return new List<ApplicationUser>();
+
             term = term.ToUpper();
 
             return await _context.Users
                 .AsNoTracking()
-                .Where(u => !u.IsDeleted && (u.NormalizedEmail.Contains(term) || u.LastName.ToUpper().Contains(term)))
+                .Where(u => !u.IsDeleted &&
+                    ((u.NormalizedEmail != null && u.NormalizedEmail.Contains(term)) ||
+                     (u.LastName != null && u.LastName.ToUpper().Contains(term))))
                 .ToListAsync(cancellationToken);
         }
 

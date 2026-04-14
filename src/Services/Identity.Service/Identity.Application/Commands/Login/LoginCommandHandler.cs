@@ -1,12 +1,12 @@
-﻿using Identity.Application.DTOs;
-using Identity.Application.Interfaces;
+﻿using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Shared.Contracts.DTOs.Identity;
 
 namespace Identity.Application.Commands.Login
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResultDto>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtTokenService _jwtService;
@@ -19,7 +19,7 @@ namespace Identity.Application.Commands.Login
             _jwtService = jwtService;
         }
 
-        public async Task<AuthResultDto> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = new ApplicationUser
             {
@@ -39,15 +39,30 @@ namespace Identity.Application.Commands.Login
                 throw new Exception("IIdentifiants non valides.");
             }
 
-            var token = _jwtService.GenerateToken(user);
-            return new AuthResultDto
-            {
-                AccessToken = token.AccessToken,
-                RefreshToken = token.RefreshToken,
-                ExpiresAt = token.ExpiresAt,
-                UserId = existingUser.Id,
-                Email = existingUser.Email!
-            };
+            var token = _jwtService.GenerateToken(existingUser);
+            var roles = await _userManager.GetRolesAsync(existingUser);
+
+            var userDto = new UserDto(
+                existingUser.Id,
+                existingUser.Email ?? string.Empty,
+                existingUser.FirstName,
+                existingUser.LastName,
+                existingUser.PhoneNumber,
+                roles.ToList(),
+                existingUser.IsEmailVerified,
+                existingUser.ReputationScore,
+                existingUser.ReviewCount,
+                existingUser.CreatedAt
+            );
+
+
+            return new AuthResponse(
+                token.AccessToken,
+                token.RefreshToken,
+                token.ExpiresAt,
+                userDto
+            );
+
         }
     }
 }

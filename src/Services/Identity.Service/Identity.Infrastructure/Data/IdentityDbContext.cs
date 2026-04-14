@@ -16,6 +16,8 @@ public class IdentityDbContext : IdentityDbContext<ApplicationUser, IdentityRole
     {
     }
 
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -53,6 +55,53 @@ public class IdentityDbContext : IdentityDbContext<ApplicationUser, IdentityRole
         builder.Entity<IdentityRoleClaim<Guid>>(entity =>
         {
             entity.ToTable("RoleClaims");
+        });
+
+
+        builder.Entity<RefreshToken>(entity =>
+        {
+
+            entity.ToTable("RefreshTokens");
+
+
+            entity.HasKey(e => e.Id);
+
+
+            entity.HasIndex(e => e.Token)
+                .IsUnique()
+                .HasDatabaseName("IX_RefreshTokens_Token");
+
+            entity.HasIndex(e => e.UserId)
+                .HasDatabaseName("IX_RefreshTokens_UserId");
+
+            entity.HasIndex(e => new { e.UserId, e.IsRevoked, e.ExpiresAt })
+                .HasDatabaseName("IX_RefreshTokens_UserIdActive");
+
+
+            entity.HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            entity.Property(e => e.Token)
+                .IsRequired()
+                .HasMaxLength(500);
+
+            entity.Property(e => e.CreatedByIp)
+                .HasMaxLength(45);
+
+            entity.Property(e => e.DeviceInfo)
+                .HasMaxLength(500);
+
+            entity.Property(e => e.RevokedByIp)
+                .HasMaxLength(45);
+
+            entity.Property(e => e.RevokeReason)
+                .HasMaxLength(200);
+
+            entity.Property(e => e.ReplacedByToken)
+                .HasMaxLength(500);
         });
     }
 }

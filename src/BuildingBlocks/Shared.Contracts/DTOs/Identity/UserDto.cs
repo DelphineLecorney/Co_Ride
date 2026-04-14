@@ -15,6 +15,14 @@
         string FirstName,
         string LastName,
         string? PhoneNumber,
+        List<string> Roles,
+        bool IsEmailVerified,
+        decimal ReputationScore,
+        int ReviewCount,
         DateTime CreatedAt
-    );
+    )
+    {
+        public string FullName => $"{FirstName} {LastName}";
+        public string Initials => $"{(FirstName.Length > 0 ? FirstName[0] : ' ')}{(LastName.Length > 0 ? LastName[0] : ' ')}";
+    }
 }

@@ -1,8 +1,8 @@
-﻿using Identity.Application.DTOs;
-using Identity.Application.Interfaces;
+﻿using Identity.Application.Interfaces;
 using Identity.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Shared.Contracts.DTOs.Identity;
 
 namespace Identity.Application.Commands.Register
 {
@@ -11,7 +11,7 @@ namespace Identity.Application.Commands.Register
     /// elle utilise UserManager pour créer l'utilisateur et IJwtTokenService pour générer 
     /// un token JWT après la création réussie de l'utilisateur.
     /// </summary>
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResultDto>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthResponse>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtTokenService _jwtService;
@@ -24,7 +24,7 @@ namespace Identity.Application.Commands.Register
             _jwtService = jwtService;
         }
 
-        public async Task<AuthResultDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var user = new ApplicationUser
             {
@@ -41,15 +41,29 @@ namespace Identity.Application.Commands.Register
                 throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
 
             var token = _jwtService.GenerateToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
 
-            return new AuthResultDto
-            {
-                AccessToken = token.AccessToken,
-                RefreshToken = token.RefreshToken,
-                ExpiresAt = token.ExpiresAt,
-                UserId = user.Id,
-                Email = user.Email!
-            };
+            var userDto = new UserDto
+            (
+                user.Id,
+                user.Email,
+                user.FirstName,
+                user.LastName,
+                user.PhoneNumber,
+                roles.ToList(),
+                user.IsEmailVerified,
+                user.ReputationScore,
+                user.ReviewCount,
+                user.CreatedAt
+                );
+
+            return new AuthResponse
+                (
+                    AccessToken: token.AccessToken,
+                    RefreshToken: token.RefreshToken,
+                    ExpiresAt: token.ExpiresAt,
+                    User: userDto
+                );
         }
     }
 }

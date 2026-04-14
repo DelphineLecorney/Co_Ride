@@ -1,5 +1,5 @@
-﻿using Identity.Application.DTOs;
-using MediatR;
+﻿using MediatR;
+using Shared.Contracts.DTOs.Identity;
 
 namespace Identity.Application.Commands.Register
 {
@@ -10,5 +10,5 @@ namespace Identity.Application.Commands.Register
         string Email,
         string Password,
         string? PhoneNumber
-    ) : IRequest<AuthResultDto>;
+    ) : IRequest<AuthResponse>;
 }
