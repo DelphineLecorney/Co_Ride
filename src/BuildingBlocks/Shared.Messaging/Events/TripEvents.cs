@@ -1,4 +1,6 @@
-﻿namespace Shared.Messaging.Events
+﻿using Shared.Kernel.Domain.Events;
+
+namespace Shared.Messaging.Events
 {
     /// <summary>
     /// Cette classe définit les événements liés aux trajets (trips) dans le système de covoiturage.
@@ -10,8 +12,8 @@
         public record TripCreatedEvent(
             Guid TripId,
             Guid DriverId,
-            string From,
-            string To,
+            string FromCity,
+            string ToCity,
             DateTime DepartureTime,
             int AvailableSeats,
             decimal PricePerSeat
