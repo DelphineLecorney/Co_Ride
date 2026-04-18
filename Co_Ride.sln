@@ -44,9 +44,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity.Service", "Identity.Service", "{90896360-2FCE-4679-9555-25B34BE6F012}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity.API", "Identity.API", "{2FC6256B-8958-4D1F-BA2A-C4DEBD850029}"
-	ProjectSection(SolutionItems) = preProject
-		src\Services\Identity.Service\Identity.API\Dockerfile = src\Services\Identity.Service\Identity.API\Dockerfile
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity.Infrastructure", "Identity.Infrastructure", "{00AD7367-8DC4-4B46-B712-90FB2DCFC39C}"
 EndProject
@@ -104,6 +101,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "�
 		.env = .env
 		.env.example = .env.example
 		.gitignore = .gitignore
+		docs\Del_Ride\00 - Vision\Contexte.md = docs\Del_Ride\00 - Vision\Contexte.md
 		docker-compose.override.yml = docker-compose.override.yml
 		docker-compose.yml = docker-compose.yml
 		README.md = README.md

@@ -71,8 +71,6 @@ public class IdentityDbContext : IdentityDbContext<ApplicationUser, IdentityRole
                 .IsUnique()
                 .HasDatabaseName("IX_RefreshTokens_Token");
 
-            entity.HasIndex(e => e.UserId)
-                .HasDatabaseName("IX_RefreshTokens_UserId");
 
             entity.HasIndex(e => new { e.UserId, e.IsRevoked, e.ExpiresAt })
                 .HasDatabaseName("IX_RefreshTokens_UserIdActive");
