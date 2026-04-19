@@ -3,6 +3,7 @@
     public enum TripStatus
     {
         Published,
-        Cancelled
+        Cancelled,
+        Full
     }
 }

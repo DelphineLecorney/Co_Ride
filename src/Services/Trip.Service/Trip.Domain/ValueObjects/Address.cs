@@ -12,7 +12,7 @@
         public static Address Create(string city)
         {
             if (string.IsNullOrWhiteSpace(city))
-                throw new ArgumentException("City cannot be empty", nameof(city));
+                throw new ArgumentException("La ville est requise", nameof(city));
             return new Address(city);
         }
 

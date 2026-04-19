@@ -14,8 +14,10 @@
         {
             if (amount < 0)
                 throw new ArgumentException("Le prix ne peut pas être négatif", nameof(amount));
+
             if (string.IsNullOrWhiteSpace(currency))
                 throw new ArgumentException("La devise ne peut pas être vide", nameof(currency));
+
             return new Price(amount, currency);
         }
         public bool Equals(Price? other)
