@@ -1,5 +1,4 @@
-﻿namespace Trip.Domain.Events;
-
+﻿namespace Trip.Domain.TripDomainEvents;
 public record TripCancelled(
     Guid TripId,
     string Reason,

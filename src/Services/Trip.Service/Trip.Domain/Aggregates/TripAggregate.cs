@@ -1,7 +1,7 @@
 ﻿using Shared.Kernel.Domain.Events.Trips;
 using Shared.Kernel.Entities;
 using Trip.Domain.Enums;
-using Trip.Domain.Events;
+using Trip.Domain.TripDomainEvents;
 using Trip.Domain.ValueObjects;
 
 namespace Trip.Domain.Aggregates;
@@ -20,6 +20,14 @@ public class TripAggregate : AggregateRoot
 
     private TripAggregate() { }
 
+    public TripAggregate(IEnumerable<object> events)
+    {
+        foreach (var e in events)
+        {
+            When(e);
+        }
+    }
+
     public static TripAggregate Create(
         Guid driverId,
         Address from,
@@ -37,7 +45,8 @@ public class TripAggregate : AggregateRoot
             to.City,
             departureTime,
             totalSeats,
-            pricePerSeat.Amount
+            pricePerSeat.Amount,
+            DateTime.UtcNow
         );
 
         trip.Apply(@event);
@@ -91,6 +100,24 @@ public class TripAggregate : AggregateRoot
             reason,
             DateTime.UtcNow
         ));
+    }
+
+    private void When(object @event)
+    {
+        switch (@event)
+        {
+            case TripCreated e:
+                Apply(e);
+                break;
+
+            case SeatsReserved e:
+                Apply(e);
+                break;
+
+            case TripCancelled e:
+                Apply(e);
+                break;
+        }
     }
 
     public void Apply(TripCreated e)

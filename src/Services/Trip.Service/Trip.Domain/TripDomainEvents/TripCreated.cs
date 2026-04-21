@@ -1,4 +1,4 @@
-﻿namespace Trip.Domain.Events;
+﻿namespace Trip.Domain.TripDomainEvents;
 
 public record TripCreated(
     Guid TripId,
@@ -7,5 +7,6 @@ public record TripCreated(
     string ToCity,
     DateTime DepartureTime,
     int TotalSeats,
-    decimal PricePerSeat
+    decimal PricePerSeat,
+    DateTime CreatedAt
 );

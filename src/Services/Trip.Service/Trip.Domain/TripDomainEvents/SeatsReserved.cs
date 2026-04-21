@@ -1,4 +1,4 @@
-﻿namespace Trip.Domain.Events;
+﻿namespace Trip.Domain.TripDomainEvents;
 
 public record SeatsReserved(
     Guid TripId,

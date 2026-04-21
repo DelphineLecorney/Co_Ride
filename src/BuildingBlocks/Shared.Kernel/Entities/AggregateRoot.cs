@@ -12,5 +12,6 @@ public abstract class AggregateRoot : Entity, IAggregateRoot, IHasDomainEvents
     public void ClearDomainEvents() => _domainEvents.Clear();
     public IReadOnlyCollection<IDomainEvent> GetUncommittedEvents() => _domainEvents.AsReadOnly();
     public void ClearUncommittedEvents() => _domainEvents.Clear();
+
 }
 
