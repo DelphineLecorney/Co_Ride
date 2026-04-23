@@ -1,5 +1,4 @@
-﻿using Shared.Kernel.Domain.Events.Trips;
-using Shared.Kernel.Entities;
+﻿using Shared.Kernel.Entities;
 using Trip.Domain.Enums;
 using Trip.Domain.TripDomainEvents;
 using Trip.Domain.ValueObjects;
@@ -51,16 +50,6 @@ public class TripAggregate : AggregateRoot
 
         trip.Apply(@event);
 
-        trip.AddDomainEvent(new TripCreatedDomainEvent(
-            @event.TripId,
-            driverId,
-            from.City,
-            to.City,
-            departureTime,
-            totalSeats,
-            pricePerSeat.Amount
-        ));
-
         return trip;
     }
 
@@ -72,19 +61,13 @@ public class TripAggregate : AggregateRoot
         if (seatsCount > AvailableSeats)
             throw new InvalidOperationException("Pas assez de places disponibles");
 
-        AvailableSeats -= seatsCount;
-
-        AddDomainEvent(new SeatsReservedDomainEvent(
+        Apply(new SeatsReserved(
             Id,
             passengerId,
             seatsCount,
+            AvailableSeats - seatsCount,
             DateTime.UtcNow
         ));
-
-        if (AvailableSeats == 0)
-        {
-            Status = TripStatus.Full;
-        }
     }
 
     public void Cancel(string reason)
@@ -95,7 +78,7 @@ public class TripAggregate : AggregateRoot
         Status = TripStatus.Cancelled;
         CancellationReason = reason;
 
-        AddDomainEvent(new TripCancelledDomainEvent(
+        Apply(new TripCancelled(
             Id,
             reason,
             DateTime.UtcNow
@@ -134,12 +117,13 @@ public class TripAggregate : AggregateRoot
     }
 
     public void Apply(SeatsReserved e)
+    {
+        AvailableSeats = e.AvailableSeats;
+
+        if (AvailableSeats <= 0)
         {
-            AvailableSeats -= e.SeatsCount;
-            if (AvailableSeats == 0)
-            {
-                Status = TripStatus.Full;
-            }
+            Status = TripStatus.Full;
+        }
     }
 
     public void Apply(TripCancelled e)

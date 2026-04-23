@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
@@ -8,6 +9,8 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Marten" Version="8.1.0" />
+	  <PackageReference Include="MassTransit" Version="9.1.0" />
+	  <PackageReference Include="MediatR" Version="14.1.0" />
 	  <PackageReference Include="System.Text.Json" Version="8.0.6" />
 	</ItemGroup>
 

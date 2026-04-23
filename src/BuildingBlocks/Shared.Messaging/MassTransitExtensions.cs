@@ -25,9 +25,6 @@ public static class MassTransitExtensions
     {
         services.AddMassTransit(config =>
         {
-            // Permet de configurer les consumers de messages en utilisant l'action fournie,
-            // ce qui offre une flexibilité pour ajouter des consumers spécifiques à
-            // l'application tout en gardant la configuration de base du transport séparée.
             configureConsumers?.Invoke(config);
 
             config.UsingRabbitMq((context, cfg) =>
@@ -36,15 +33,13 @@ public static class MassTransitExtensions
                 var rabbitMqUser = configuration["RabbitMQ:Username"] ?? "guest";
                 var rabbitMqPass = configuration["RabbitMQ:Password"] ?? "guest";
 
-                // Configure RabbitMQ comme transport de messages en utilisant les paramètres de connexion
+
                 cfg.Host(rabbitMqHost, "/", h =>
                 {
                     h.Username(rabbitMqUser);
                     h.Password(rabbitMqPass);
                 });
 
-                // Configure les endpoints de MassTransit en utilisant le contexte de configuration, ce qui permet
-                // de découvrir automatiquement les consumers et de les associer aux queues correspondantes dans RabbitMQ.
                 cfg.ConfigureEndpoints(context);
             });
         });

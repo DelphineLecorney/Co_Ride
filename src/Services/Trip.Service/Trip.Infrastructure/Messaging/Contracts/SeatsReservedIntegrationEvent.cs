@@ -7,7 +7,7 @@
     public record SeatsReservedIntegrationEvent
     {
         public Guid TripId { get; init; }
-        public Guid BookingId { get; init; }
+        public Guid PassengerId { get; init; }
         public int SeatsReserved { get; init; }
         public int AvailableSeats { get; init; }
         public DateTime ReservedAt { get; init; }

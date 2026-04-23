@@ -32,7 +32,6 @@
                 options.AutoCreateSchemaObjects = JasperFx.AutoCreate.All;
 
 
-
                 // Event types
                 options.Events.AddEventType<TripCreated>();
                 options.Events.AddEventType<TripCancelled>();
