@@ -4,7 +4,7 @@ namespace Shared.Kernel.Domain.Events
     /// Classe de base pour les événements de domaine, 
     /// fournissant une implémentation de l'interface IDomainEvent.
     /// </summary>
-    public abstract class DomainEvent : IDomainEvent
+    public abstract record DomainEvent : IDomainEvent
     {
         public Guid EventId { get; private set; }
         public DateTime OccurredOn { get; private set; }
