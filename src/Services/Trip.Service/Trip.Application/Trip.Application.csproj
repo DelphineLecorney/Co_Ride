@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />    
+	  <PackageReference Include="Marten" Version="8.1.0" />
+    <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Shared.Contracts\Shared.Contracts.csproj" />
     <ProjectReference Include="..\Trip.Domain\Trip.Domain.csproj" />
   </ItemGroup>

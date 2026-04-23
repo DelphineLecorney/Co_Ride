@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Shared.Messaging\Shared.Messaging.csproj" />
     <ProjectReference Include="..\Trip.Application\Trip.Application.csproj" />
+    <ProjectReference Include="..\Trip.Infrastructure\Trip.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
