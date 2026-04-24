@@ -1,7 +1,7 @@
-﻿namespace Shared.Kernel.Domain.Events.Trips
+﻿namespace Shared.Kernel.SharedKernelDomainEvents.Trips
 {
     public record TripPublishedDomainEvent(
-        Guid TripId,
-        DateTime PublishedAt
-    ) : DomainEvent;
+    Guid TripId,
+    DateTime PublishedAt
+) : DomainEvent;
 }

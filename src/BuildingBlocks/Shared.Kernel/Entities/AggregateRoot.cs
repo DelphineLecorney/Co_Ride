@@ -1,4 +1,4 @@
-﻿using Shared.Kernel.Domain.Events;
+﻿using Shared.Kernel.SharedKernelDomainEvents;
 
 namespace Shared.Kernel.Entities
 {

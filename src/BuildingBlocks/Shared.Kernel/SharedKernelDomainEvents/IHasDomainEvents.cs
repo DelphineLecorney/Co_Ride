@@ -1,21 +1,21 @@
-namespace Shared.Kernel.Domain.Events
+ï»¿namespace Shared.Kernel.SharedKernelDomainEvents
 {
     /// <summary>
-    /// Cette interface est utilisée pour marquer les entités qui contiennent des événements de domaine.
+    /// Cette interface est utilisÃ©e pour marquer les entitÃ©s qui contiennent des Ã©vÃ©nements de domaine.
     /// </summary>
     public interface IHasDomainEvents
     {
-        
-        // Collection d'événements de domaine associés à l'entité.    
+
+        // Collection d'Ã©vÃ©nements de domaine associÃ©s Ã  l'entitÃ©.    
         IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
 
-        // Méthode pour ajouter un événement de domaine à la collection.
+        // MÃ©thode pour ajouter un Ã©vÃ©nement de domaine Ã  la collection.
         void AddDomainEvent(IDomainEvent domainEvent);
 
-        // Méthode pour supprimer un événement de domaine de la collection.
+        // MÃ©thode pour supprimer un Ã©vÃ©nement de domaine de la collection.
         void RemoveDomainEvent(IDomainEvent domainEvent);
 
-        // Méthode pour effacer tous les événements de domaine de la collection.
+        // MÃ©thode pour effacer tous les Ã©vÃ©nements de domaine de la collection.
         void ClearDomainEvents();
     }
 }
