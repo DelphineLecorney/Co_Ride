@@ -1,8 +1,8 @@
-﻿namespace Shared.Kernel.Domain.Events.Trips
+﻿namespace Shared.Kernel.SharedKernelDomainEvents.Trips
 {
     public record TripCancelledDomainEvent(
-        Guid TripId,
-        string Reason,
-        DateTime CancelledAt
-    ) : DomainEvent;
+    Guid TripId,
+    string Reason,
+    DateTime CancelledAt
+) : DomainEvent;
 }

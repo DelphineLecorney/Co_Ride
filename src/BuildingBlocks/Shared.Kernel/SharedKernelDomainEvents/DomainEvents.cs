@@ -1,8 +1,9 @@
-namespace Shared.Kernel.Domain.Events
+ï»¿
+namespace Shared.Kernel.SharedKernelDomainEvents
 {
     /// <summary>
-    /// Classe de base pour les événements de domaine, 
-    /// fournissant une implémentation de l'interface IDomainEvent.
+    /// Classe de base pour les Ã©vÃ©nements de domaine, 
+    /// fournissant une implÃ©mentation de l'interface IDomainEvent.
     /// </summary>
     public abstract record DomainEvent : IDomainEvent
     {

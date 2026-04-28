@@ -1,6 +1,6 @@
-﻿namespace Shared.Kernel.SharedKernelDomainEvents.Trips
+﻿namespace Shared.Messaging.SharedMessagingDomainEvents.TripEvents
 {
-    public record TripCreatedDomainEvent(
+    public record TripCreatedEvent(
     Guid TripId,
     Guid DriverId,
     string FromCity,
@@ -8,5 +8,5 @@
     DateTime DepartureTime,
     int AvailableSeats,
     decimal PricePerSeat
-) : DomainEvent;
+);
 }
