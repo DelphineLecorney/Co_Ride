@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Shared.Contracts.DTOs.Identity;
-using Shared.Messaging.SharedMessagingDomainEvents;
+using Shared.Messaging.SharedMessagingDomainEvents.UserEvents;
 
 namespace Identity.Infrastructure.Services;
 

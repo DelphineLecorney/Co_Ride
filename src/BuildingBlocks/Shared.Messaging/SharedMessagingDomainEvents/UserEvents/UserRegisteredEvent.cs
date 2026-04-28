@@ -1,4 +1,4 @@
-﻿namespace Shared.Messaging.SharedMessagingDomainEvents;
+﻿namespace Shared.Messaging.SharedMessagingDomainEvents.UserEvents;
 
 /// <summary>
 /// Event publié quand un utilisateur s'inscrit
