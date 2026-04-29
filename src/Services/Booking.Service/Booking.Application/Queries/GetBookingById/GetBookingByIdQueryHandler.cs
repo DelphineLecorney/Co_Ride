@@ -12,7 +12,7 @@ namespace Booking.Application.Queries.GetBookingById
         {
             _bookingRepository = bookingRepository;
         }
-        public Task<BookingDto> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
+        public Task<BookingDto?> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
