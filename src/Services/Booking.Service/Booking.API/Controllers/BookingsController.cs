@@ -13,7 +13,9 @@ namespace Booking.API.Controllers
         private readonly IMediator _mediator;
         private readonly ILogger<BookingsController> _logger;
 
-        public BookingsController(IMediator mediator, ILogger<BookingsController> logger)
+        public BookingsController(
+            IMediator mediator, 
+            ILogger<BookingsController> logger)
         {
             _mediator = mediator;
             _logger = logger;

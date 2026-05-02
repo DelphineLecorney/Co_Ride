@@ -2,6 +2,8 @@
 {
     public record BookingCancelledEvent(
         Guid BookingId,
-        string Reason
+        Guid PassengerId,
+        string Reason,
+        DateTime CancelledAt
     );
 }
