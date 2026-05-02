@@ -5,6 +5,7 @@
         Guid TripId,
         Guid PassengerId,
         int SeatsBooked,
-        decimal TotalPrice
+        decimal TotalPrice,
+        DateTime CreatedAt
     );
 }
