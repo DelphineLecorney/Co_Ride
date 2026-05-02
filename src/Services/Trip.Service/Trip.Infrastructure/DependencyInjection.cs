@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Trip.Infrastructure.Messaging.Behaviors;
 using Trip.Infrastructure.TripInfraMarten;
+using Shared.Messaging;
 
 namespace Trip.Infrastructure;
 
@@ -16,7 +17,7 @@ public static class DependencyInjection
         services.AddMartenEventStore(configuration);
 
         // MassTransit + RabbitMQ
-        //services.AddMassTransitWithRabbitMq(configuration);
+        services.AddMassTransitWithRabbitMq(configuration);
 
         // Behavior MediatR pour publier les événements de domaine
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MartenEventPublisherBehavior<,>));
