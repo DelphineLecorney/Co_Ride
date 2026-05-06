@@ -6,9 +6,9 @@ namespace Blazor.Client.Services
     public class TripService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger _logger;
+        private readonly ILogger<TripService> _logger;
 
-        public TripService(HttpClient httpClient, ILogger logger)
+        public TripService(HttpClient httpClient, ILogger<TripService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;

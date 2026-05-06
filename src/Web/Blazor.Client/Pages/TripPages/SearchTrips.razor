@@ -1,0 +1,38 @@
+﻿@page "/trips"
+@namespace Blazor.Client.Pages.TripPages
+
+
+<div class="user-page">
+    <h1>Bonjour, <span>@Name</span></h1>
+    <p>Bienvenue sur CoRide</p>
+</div>
+
+<div class="search-form">
+    <InputText @bind-Value="FromCity" placeholder="Ville de départ" class="form-control" />
+    <InputText @bind-Value="ToCity" placeholder="Ville d'arrivée" class="form-control" />
+    <InputNumber @bind-Value="MaxPrice" placeholder="Prix max" class="form-control" />
+
+    <button class="btn btn-primary mt-2" @onclick="Search">Rechercher</button>
+</div>
+
+@if (IsLoading)
+{
+    <p>Chargement...</p>
+}
+else if (Trips.Any())
+{
+    @foreach (var trip in Trips)
+    {
+        <div class="card p-3 mt-3">
+            <h5>@trip.From → @trip.To</h5>
+            <p>Conducteur : @trip.DriverName</p>
+            <p>Départ : @trip.DepartureTime</p>
+            <p>Places : @trip.BookedSeats / @trip.AvailableSeats</p>
+            <p>Prix : @trip.PricePerSeat €</p>
+        </div>
+    }
+}
+else if (HasSearched)
+{
+    <p>Aucun trajet trouvé.</p>
+}

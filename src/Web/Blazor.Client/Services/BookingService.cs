@@ -6,9 +6,9 @@ namespace Blazor.Client.Services
     public class BookingService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger _logger;
+        private readonly ILogger<BookingService> _logger;
 
-        public BookingService(HttpClient httpClient, ILogger logger)
+        public BookingService(HttpClient httpClient, ILogger<BookingService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
