@@ -1,4 +1,4 @@
-﻿@page "/trips"
+﻿@page "/searchTrips"
 @namespace Blazor.Client.Pages.TripPages
 
 
@@ -7,12 +7,31 @@
     <p>Bienvenue sur CoRide</p>
 </div>
 
-<div class="search-form">
-    <InputText @bind-Value="FromCity" placeholder="Ville de départ" class="form-control" />
-    <InputText @bind-Value="ToCity" placeholder="Ville d'arrivée" class="form-control" />
-    <InputNumber @bind-Value="MaxPrice" placeholder="Prix max" class="form-control" />
+<div class="search-container">
 
-    <button class="btn btn-primary mt-2" @onclick="Search">Rechercher</button>
+    <h2 class="mb-3">Rechercher un trajet</h2>
+
+    <div class="search-form card p-3 shadow-sm">
+
+        <div class="mb-2">
+            <label>Ville de départ</label>
+            <InputText @bind-Value="FromCity" class="form-control" />
+        </div>
+
+        <div class="mb-2">
+            <label>Ville d'arrivée</label>
+            <InputText @bind-Value="ToCity" class="form-control" />
+        </div>
+
+        <div class="mb-2">
+            <label>Prix maximum</label>
+            <InputNumber @bind-Value="MaxPrice" class="form-control" />
+        </div>
+
+        <button class="btn btn-primary mt-2 w-100" @onclick="Search">
+            Rechercher
+        </button>
+    </div>
 </div>
 
 @if (IsLoading)
