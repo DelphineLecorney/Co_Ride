@@ -15,8 +15,8 @@ namespace Blazor.Client.Services
         }
 
         public async Task<List<TripDto>> SearchTripAsync(
-            string? fromCity = null, 
-            string? toCity = null, 
+            string? fromCity = null,
+            string? toCity = null,
             decimal? maxPrice = null)
         {
             try
@@ -64,6 +64,20 @@ namespace Blazor.Client.Services
                 {
                     return await response.Content.ReadFromJsonAsync<Guid>();
                 }
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    _logger.LogWarning("Tentative de création de trajet sans être connecté.");
+                    return null;
+                }
+
+                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    _logger.LogWarning("Erreur de validation lors de la création du trajet : {Error}", error);
+                    return null;
+                }
+
                 return null;
             }
             catch (Exception ex)

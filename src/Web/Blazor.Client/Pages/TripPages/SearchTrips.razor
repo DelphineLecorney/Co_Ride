@@ -1,12 +1,6 @@
 ﻿@page "/searchTrips"
 @namespace Blazor.Client.Pages.TripPages
 
-
-<div class="user-page">
-    <h1>Bonjour, <span>@Name</span></h1>
-    <p>Bienvenue sur CoRide</p>
-</div>
-
 <div class="search-container">
 
     <h2 class="mb-3">Rechercher un trajet</h2>
@@ -43,7 +37,7 @@ else if (Trips.Any())
     @foreach (var trip in Trips)
     {
         <div class="card p-3 mt-3">
-            <h5>@trip.From → @trip.To</h5>
+            <h5>@trip.FromCity → @trip.ToCity</h5>
             <p>Conducteur : @trip.DriverName</p>
             <p>Départ : @trip.DepartureTime</p>
             <p>Places : @trip.BookedSeats / @trip.AvailableSeats</p>

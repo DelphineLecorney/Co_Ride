@@ -9,11 +9,19 @@ main {
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    /*    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);*/
+    background: #65b588;
+    background: linear-gradient(90deg, 
+    rgba(101, 181, 136, 1) 0%,
+    rgba(7, 38, 37, 1) 30%,
+    rgba(64, 156, 140, 1) 53%, 
+    rgba(5, 7, 16, 1) 91%, 
+    rgba(5, 36, 46, 1) 100%);
 }
 
 .top-row {
-    background-color: #f7f7f7;
+    background: var(--gradient-coride);
+    color: var(--text-light);
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
     height: 3.5rem;

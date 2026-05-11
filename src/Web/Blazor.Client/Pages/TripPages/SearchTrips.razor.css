@@ -1,0 +1,23 @@
+﻿.search-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h3 {
+    color: var(--green-light);
+}
+
+input, select, textarea {
+    border: 2px solid var(--green-mid);
+}
+
+button {
+    background-color: var(--green-light);
+    border-color: var(--green-mid);
+}
+
+    button:hover {
+        background-color: var(--green-mid);
+    }
+
