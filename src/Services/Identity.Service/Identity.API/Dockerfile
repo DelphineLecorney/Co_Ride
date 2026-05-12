@@ -16,7 +16,7 @@ RUN dotnet restore src/Services/Identity.Service/Identity.API/Identity.API.cspro
 # Copier le reste du code (IMPORTANT : éviter le double src/src)
 COPY src/ src/
 
-RUN dotnet publish src/Services/Identity.Service/Identity.Service/Identity.API/Identity.API.csproj -c Release -o /app/publish
+RUN dotnet publish src/Services/Identity.Service/Identity.API/Identity.API.csproj -c Release -o /app/publish
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime

@@ -22,6 +22,12 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(sp => new HttpClient {
+    // Si je veux en local
+    BaseAddress = new Uri("http://localhost:5188/api/") });
+
+    // Si je veux lancer mon docker
+    //BaseAddress = new Uri("http://localhost:8080")});
+
 
 await builder.Build().RunAsync();

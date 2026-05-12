@@ -7,7 +7,7 @@
 
     <main>
         @inject AuthenticationStateProvider AuthenticationStateProvider
-        @* @inject AuthService AuthService *@
+        @inject AuthService AuthService
         @inject NavigationManager NavigationManager
 
         @code {
@@ -25,11 +25,11 @@
                     UserName = user.Identity?.Name;
             }
 
-            // private async Task Logout()
-            // {
-            //     await AuthService.Logout();
-            //     NavigationManager.NavigateTo("/");
-            // }
+            private async Task Logout()
+            {
+                await AuthService.Logout();
+                NavigationManager.NavigateTo("/");
+            }
         }
 
         <div class="top-row px-4 d-flex justify-content-between align-items-center">
@@ -39,10 +39,8 @@
             <div>
                 <span class="me-3">Bonjour @UserName et Bienvenue sur CoRide</span>
                 @if (IsAuthenticated)
-                {
-                    
-                    @* <button class="btn btn-sm btn-outline-light" @onclick="Logout">Déconnexion</button> *@
-                    
+                {                   
+                    <button class="btn btn-sm btn-outline-light" @onclick="Logout">Déconnexion</button>                
                 }
                 else
                 {
