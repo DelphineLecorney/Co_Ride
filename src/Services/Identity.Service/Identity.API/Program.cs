@@ -1,3 +1,4 @@
+using Identity.Application;
 using Identity.Application.Interfaces;
 using Identity.Application.Mappings;
 using Identity.Infrastructure;
@@ -6,10 +7,19 @@ using Identity.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DotNetEnv;
+
+// Pour faire les tests en local
+Env.TraversePath().Load();
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+Console.WriteLine($"CHAINE LUE : {builder.Configuration.GetConnectionString("DefaultConnection")}");
+
+
 // Identity
+builder.Services.AddIdentityApplication();
 builder.Services.AddIdentityInfrastructure(builder.Configuration);
 
 // JWT Authentication
@@ -37,10 +47,12 @@ builder.Services.AddAuthentication(options =>
 // Services
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
-builder.Services.AddAutoMapper(config =>
+builder.Services.AddAutoMapper(cfg =>
 {
-    config.AddProfile<IdentityMapping>();
+    cfg.AddMaps(typeof(IdentityMapping).Assembly);
 });
+
+
 builder.Services.AddHttpContextAccessor();
 
 

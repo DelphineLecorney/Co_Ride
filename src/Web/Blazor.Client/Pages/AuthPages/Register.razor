@@ -1,0 +1,54 @@
+﻿@page "/register"
+
+@namespace Blazor.Client.Pages.AuthPages
+@using Shared.Contracts.DTOs.Identity
+
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+        <div class="container mt-5" style="max-width: 500px;">
+            <h3 class="mb-4 text-center">Créer un compte</h3>
+
+            <div class="card p-4 shadow-sm">
+                <input class="form-control mb-3" @bind="Email" placeholder="Email" />
+                <input class="form-control mb-3" @bind="Password" type="password" placeholder="Mot de passe" />
+                <input class="form-control mb-3" @bind="ConfirmPassword" type="password" placeholder="Confirmer le mot de passe" />
+
+                <button class="btn btn-primary w-100" @onclick="RegisterUser">Créer mon compte</button>
+
+                @if (ErrorMessage is not null)
+                {
+                    <p class="text-danger mt-3 text-center">@ErrorMessage</p>
+                }
+            </div>
+        </div>
+
+@code {
+    string Email = "";
+    string Password = "";
+    string ConfirmPassword = "";
+    string? ErrorMessage;
+
+    private async Task RegisterUser()
+    {
+        if (Password != ConfirmPassword)
+        {
+            ErrorMessage = "Les mots de passe ne correspondent pas";
+            return;
+        }
+
+        var response = await Http.PostAsJsonAsync("auth/register", new RegisterRequest
+        {
+            Email = Email,
+            Password = Password
+        });
+
+        if (!response.IsSuccessStatusCode)
+        {
+            ErrorMessage = "Impossible de créer le compte";
+            return;
+        }
+
+        Nav.NavigateTo("/login");
+    }
+}

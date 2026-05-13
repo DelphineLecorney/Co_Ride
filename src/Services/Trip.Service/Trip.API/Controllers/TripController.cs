@@ -1,10 +1,13 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Contracts.DTOs.Trip;
+using System.Security.Claims;
+using Trip.Application.Commands.CancelTrip;
 using Trip.Application.Commands.CreateTrip;
+using Trip.Application.Projections.ReadModels;
 using Trip.Application.Queries.GetTripById;
 using Trip.Application.Queries.SearchTrips;
-using Trip.Application.Projections.ReadModels;
-using Trip.Application.Commands.CancelTrip;
 
 namespace Trip.API.Controllers;
 
@@ -28,18 +31,28 @@ public class TripController : ControllerBase
     /// <param name="command">Détails du trip à créer</param>
     /// <returns>ID du trip créé</returns>
     [HttpPost]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateTrip([FromBody] CreateTripCommand command)
+    [Authorize]
+    public async Task<IActionResult> CreateTrip([FromBody] CreateTripRequest request)
     {
         try
         {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(userIdString, out var driverId))
+                return Unauthorized("Impossible d'identifier l'utilisateur.");
+
+            var command = new CreateTripCommand(
+                driverId,
+                request.FromCity,
+                request.ToCity,
+                request.DepartureTime,
+                request.AvailableSeats,
+                request.PricePerSeat
+            );
+
             var tripId = await _mediator.Send(command);
 
-            return CreatedAtAction(
-                nameof(GetTripById),
-                new { id = tripId },
-                tripId);
+            return CreatedAtAction(nameof(GetTripById), new { id = tripId }, tripId);
         }
         catch (FluentValidation.ValidationException ex)
         {
@@ -126,6 +139,7 @@ public class TripController : ControllerBase
     /// <param name="id">ID du trip à annuler</param>
     /// <param name="command">Détails de l'annulation</param>
     /// <returns>Résultat de l'annulation</returns>
+    [Authorize]
     [HttpPost("{id:guid}/cancel")]
     [ProducesResponseType(typeof(CancelTripResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -170,6 +184,7 @@ public class TripController : ControllerBase
     /// <param name="id">ID du trip</param>
     /// <param name="command">Détails de la réservation</param>
     /// <returns>Résultat de la réservation</returns>
+    [Authorize]
     [HttpPost("{id:guid}/reserve")]
     [ProducesResponseType(typeof(Application.Commands.ReserveSeats.ReserveSeatsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

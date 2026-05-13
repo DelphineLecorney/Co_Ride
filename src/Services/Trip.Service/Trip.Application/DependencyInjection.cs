@@ -1,7 +1,6 @@
-﻿using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+
 namespace Trip.Application;
 
 public static class DependencyInjection

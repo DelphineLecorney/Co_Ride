@@ -28,7 +28,7 @@ namespace Identity.Application.Mappings
             }));
 
             CreateMap<ApplicationUser, AuthResponse>()
-            .ForMember(dest => dest.User.Id, opt => opt.MapFrom(src => src.Id));
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src));
 
             CreateMap<RegisterCommand, ApplicationUser>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))

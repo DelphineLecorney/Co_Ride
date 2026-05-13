@@ -19,9 +19,9 @@ services:
       #- ./scripts/init-postgres.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 20s
+      timeout: 10s
+      retries: 10
     networks:
       - covoiturage-network
 
@@ -42,8 +42,8 @@ services:
       test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${SQLSERVER_SA_PASSWORD}' -C -Q 'SELECT 1'"]
       interval: 20s
       timeout: 10s
-      retries: 5
-      start_period: 120s
+      retries: 10
+      start_period: 30s
 
     networks:
       - covoiturage-network
@@ -144,7 +144,7 @@ services:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       ASPNETCORE_URLS: ${ASPNETCORE_URLS}
       ConnectionStrings__DefaultConnection: "Server=${SQLSERVER_HOST};Database=IdentityDB;User Id=sa;Password=${SQLSERVER_SA_PASSWORD};TrustServerCertificate=True"
-      JwtSettings__SecretKey: ${JWT_SECRET_KEY}
+      JwtSettings__SecretKey: ${JWT}
       JwtSettings__Issuer: ${JWT_ISSUER}
       JwtSettings__Audience: ${JWT_AUDIENCE}
       Seq__ServerUrl: "http://${SEQ_HOST}:${SEQ_PORT}"
