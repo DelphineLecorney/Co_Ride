@@ -11,9 +11,8 @@
     /// <param name="PricePerSeat">Prix demandé par siège.</param>
     /// <param name="Description">Description optionnelle du trajet (infos pratiques, remarques, etc.).</param>
     public record CreateTripRequest(
-        Guid DriverId,
-        string From,
-        string To,
+        string FromCity,
+        string ToCity,
         DateTime DepartureTime,
         int AvailableSeats,
         decimal PricePerSeat,

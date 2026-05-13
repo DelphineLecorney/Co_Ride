@@ -1,13 +1,56 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazor.Client.Interfaces
+@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
-        <div class="top-row px-4">
+        @inject AuthenticationStateProvider AuthenticationStateProvider
+        @inject IAuthService AuthService
+        @inject NavigationManager NavigationManager
+
+        @code {
+            private bool IsAuthenticated;
+            private string? UserName = "Utilisateur inconnu 🤭";
+
+            protected override async Task OnInitializedAsync()
+            {
+                var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                var user = authState.User;
+
+                IsAuthenticated = user.Identity?.IsAuthenticated ?? false;
+
+                if (IsAuthenticated)
+                    UserName = user.Identity?.Name;
+            }
+
+            private async Task Logout()
+            {
+                await AuthService.Logout();
+                NavigationManager.NavigateTo("/");
+            }
+        }
+
+        <div class="top-row px-4 d-flex justify-content-between align-items-center">
+
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+
+            <div>
+                <span class="me-3">Bonjour @UserName et Bienvenue sur CoRide</span>
+                @if (IsAuthenticated)
+                {                   
+                    <button class="btn btn-sm btn-outline-light" @onclick="Logout">Déconnexion</button>                
+                }
+                else
+                {
+                    <NavLink class="btn btn-sm btn-primary" href="login">Connexion</NavLink>
+                }
+            </div>
+
         </div>
+
 
         <article class="content px-4">
             @Body

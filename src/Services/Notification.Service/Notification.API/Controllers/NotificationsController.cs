@@ -1,6 +1,4 @@
-﻿using MassTransit.Mediator;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Notification.Application.Interfaces;
 
 namespace Notification.API.Controllers
@@ -13,7 +11,7 @@ namespace Notification.API.Controllers
         private readonly ILogger<NotificationsController> _logger;
 
         public NotificationsController(
-            INotificationRepository notificationRepository, 
+            INotificationRepository notificationRepository,
             ILogger<NotificationsController> logger)
         {
             _notificationRepository = notificationRepository;

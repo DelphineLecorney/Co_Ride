@@ -1,0 +1,50 @@
+﻿@page "/login"
+@namespace Blazor.Client.Pages.AuthPages
+@using Shared.Contracts.DTOs.Identity
+@using Blazor.Client.Authentication
+@using Blazor.Client.Interfaces
+@using Microsoft.AspNetCore.Components.Authorization
+
+
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+<div class="container mt-5" style="max-width: 500px;">
+    <h3 class="mb-4 text-center">Connexion</h3>
+
+    <div class="card p-4 shadow-sm">
+        <input class="form-control mb-3" @bind="Email" placeholder="Email" />
+        <input class="form-control mb-3" @bind="Password" type="password" placeholder="Mot de passe" />
+
+        <button class="btn btn-primary w-100" @onclick="LoginUser">Se connecter</button>
+
+        @if (ErrorMessage is not null)
+        {
+            <p class="text-danger mt-3 text-center">@ErrorMessage</p>
+        }
+    </div>
+</div>
+
+@code {
+    string Email = "";
+    string Password = "";
+    string? ErrorMessage;
+
+    private async Task LoginUser()
+    {
+        var success = await AuthService.Login(new LoginRequest(Email, Password));
+
+        if (!success)
+        {
+            ErrorMessage = "Email ou mot de passe incorrect";
+            return;
+        }
+
+
+        if (AuthStateProvider is CustomAuthStateProvider provider)
+            provider.NotifyUserAuthentication();
+
+        NavigationManager.NavigateTo("/");
+    }
+}

@@ -1,0 +1,37 @@
+﻿@page "/create-trip"
+@namespace Blazor.Client.Pages.TripPages
+
+<PageTitle>Proposer un trajet</PageTitle>
+
+<div class="create-container">
+
+    <h2 class="mb-3">Proposer un trajet</h2>
+
+    <div class="create-form card p-3 shadow-sm">
+
+        <div class="mb-3">
+            <label>Ville de départ</label>
+            <input class="form-control" @bind="FromCity" />
+        </div>
+
+        <div class="mb-3">
+            <label>Ville d'arrivée</label>
+            <input class="form-control" @bind="ToCity" />
+        </div>
+
+        <div class="mb-3">
+            <label>Prix</label>
+            <input class="form-control" type="number" @bind="PricePerSeat" />
+        </div>
+
+        <div class="mb-3">
+            <label>Date</label>
+            <input class="form-control" type="datetime-local" @bind="DepartureTime" />
+        </div>
+
+    </div>
+
+    <button class="btn btn-primary mt-2 w-100" @onclick="Create">
+        Créer un trajet
+    </button>
+</div>

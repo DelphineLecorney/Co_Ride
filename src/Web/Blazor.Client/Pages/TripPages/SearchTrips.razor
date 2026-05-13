@@ -1,0 +1,51 @@
+﻿@page "/searchTrips"
+@namespace Blazor.Client.Pages.TripPages
+
+<div class="search-container">
+
+    <h2 class="mb-3">Rechercher un trajet</h2>
+
+    <div class="search-form card p-3 shadow-sm">
+
+        <div class="mb-2">
+            <label>Ville de départ</label>
+            <InputText @bind-Value="FromCity" class="form-control" />
+        </div>
+
+        <div class="mb-2">
+            <label>Ville d'arrivée</label>
+            <InputText @bind-Value="ToCity" class="form-control" />
+        </div>
+
+        <div class="mb-2">
+            <label>Prix maximum</label>
+            <InputNumber @bind-Value="MaxPrice" class="form-control" />
+        </div>
+
+        <button class="btn btn-primary mt-2 w-100" @onclick="Search">
+            Rechercher
+        </button>
+    </div>
+</div>
+
+@if (IsLoading)
+{
+    <p>Chargement...</p>
+}
+else if (Trips.Any())
+{
+    @foreach (var trip in Trips)
+    {
+        <div class="card p-3 mt-3">
+            <h5>@trip.FromCity → @trip.ToCity</h5>
+            <p>Conducteur : @trip.DriverName</p>
+            <p>Départ : @trip.DepartureTime</p>
+            <p>Places : @trip.BookedSeats / @trip.AvailableSeats</p>
+            <p>Prix : @trip.PricePerSeat €</p>
+        </div>
+    }
+}
+else if (HasSearched)
+{
+    <p>Aucun trajet trouvé.</p>
+}

@@ -1,9 +1,13 @@
-﻿using Identity.Domain.Entities;
+﻿using Identity.Application.Interfaces;
+using Identity.Domain.Entities;
 using Identity.Infrastructure.Data;
+using Identity.Infrastructure.Repositories;
+using Identity.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
+using Shared.Messaging;
 
 
 namespace Identity.Infrastructure
@@ -26,7 +30,13 @@ namespace Identity.Infrastructure
                 options.Password.RequiredUniqueChars = 1;
             })
                 .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddSignInManager<SignInManager<ApplicationUser>>();
+
+            services.AddMassTransitWithRabbitMq(configuration);
+
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
             return services;
         }
