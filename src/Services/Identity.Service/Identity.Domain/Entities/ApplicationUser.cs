@@ -9,6 +9,7 @@ namespace Identity.Domain.Entities
     /// </summary>
     public class ApplicationUser : IdentityUser<Guid>
     {
+        public UserProfile? Profile { get; private set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 
@@ -25,6 +26,12 @@ namespace Identity.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastLoginAt { get; set; }
         public DateTime? DeletedAt { get; set; }
+
+        public UserProfile InitializeProfile(string displayName)
+        {
+            Profile = UserProfile.Create(Id, displayName, PhoneNumber);
+            return Profile;
+        }
 
     }
 
