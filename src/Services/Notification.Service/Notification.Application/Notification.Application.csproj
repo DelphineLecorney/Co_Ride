@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Shared.Messaging\Shared.Messaging.csproj" />
     <ProjectReference Include="..\Notification.Domain\Notification.Domain.csproj" />
-    <ProjectReference Include="..\src\BuildingBlocks\Shared.Messaging\Shared.Messaging.csproj" />
   </ItemGroup>
 
 </Project>
