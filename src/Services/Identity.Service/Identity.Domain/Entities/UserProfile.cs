@@ -1,6 +1,5 @@
 ﻿namespace Identity.Domain.Entities
 {
-    // Identity.Domain/Entities/UserProfile.cs
     public class UserProfile
     {
         public Guid Id { get; private set; }
@@ -12,7 +11,6 @@
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
-        // Requis par EF Core
         private UserProfile() { }
 
         public static UserProfile Create(Guid userId, string displayName, string? phoneNumber = null)
@@ -48,6 +46,4 @@
             UpdatedAt = DateTime.UtcNow;
         }
     }
-
-
 }

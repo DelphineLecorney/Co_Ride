@@ -1,5 +1,5 @@
-﻿using Identity.Application.DTOs;
-using MediatR;
+﻿using MediatR;
+using Shared.Contracts.Profile;
 
 namespace Identity.Application.Queries.GetUserProfile
 {

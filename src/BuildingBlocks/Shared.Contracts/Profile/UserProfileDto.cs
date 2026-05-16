@@ -1,4 +1,4 @@
-﻿namespace Identity.Application.DTOs
+﻿namespace Shared.Contracts.Profile
 {
     public record UserProfileDto(
         Guid UserId,
