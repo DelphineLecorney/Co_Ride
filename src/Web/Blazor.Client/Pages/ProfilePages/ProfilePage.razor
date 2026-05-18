@@ -1,0 +1,23 @@
+﻿
+@page "/profile"
+@using Blazor.Client.Pages.ProfilePages.Components
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+
+<PageTitle>Mon Profil</PageTitle>
+
+@if (_loading)
+{
+    <p>Chargement...</p>
+}
+else if (_profile is null)
+{
+    <p>Profil introuvable.</p>
+}
+else
+{
+    <ProfileCard Profile="_profile" />
+
+    <button @onclick="GoToEdit">✏️ Modifier mon profil</button>
+}

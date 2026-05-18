@@ -3,7 +3,7 @@ using Identity.Domain.Entities;
 using Identity.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Identity.Infrastruure.Repositories
+namespace Identity.Infrastructure.Repositories
 {
     public class UserProfileRepository(IdentityDbContext context) : IUserProfileRepository
     {

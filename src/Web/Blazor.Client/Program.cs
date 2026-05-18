@@ -19,15 +19,18 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<TripService>();
 builder.Services.AddScoped<BookingService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 
-builder.Services.AddScoped(sp => new HttpClient {
+builder.Services.AddScoped(sp => new HttpClient
+{
     // Si je veux en local
-    BaseAddress = new Uri("http://localhost:5188/api/") });
+    BaseAddress = new Uri("http://localhost:5188/api/")
+});
 
-    // Si je veux lancer mon docker
-    //BaseAddress = new Uri("http://localhost:8080")});
+// Si je veux lancer mon docker
+//BaseAddress = new Uri("http://localhost:8080")});
 
 
 await builder.Build().RunAsync();
