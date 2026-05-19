@@ -1,19 +1,19 @@
 ﻿@using Blazor.Client.Interfaces
 @using Microsoft.AspNetCore.Components.Authorization
 @inherits LayoutComponentBase
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
-        @inject AuthenticationStateProvider AuthenticationStateProvider
-        @inject IAuthService AuthService
-        @inject NavigationManager NavigationManager
-
         @code {
             private bool IsAuthenticated;
-            private string? UserName = "Utilisateur inconnu 🤭";
+            private string? FullName = "Utilisateur inconnu 🤭";
 
             protected override async Task OnInitializedAsync()
             {
@@ -23,7 +23,7 @@
                 IsAuthenticated = user.Identity?.IsAuthenticated ?? false;
 
                 if (IsAuthenticated)
-                    UserName = user.Identity?.Name;
+                    FullName = user.Identity?.Name;
             }
 
             private async Task Logout()
@@ -38,7 +38,7 @@
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
 
             <div>
-                <span class="me-3">Bonjour @UserName et Bienvenue sur CoRide</span>
+                <span class="me-3">Bonjour @FullName et Bienvenue sur CoRide</span>
                 @if (IsAuthenticated)
                 {                   
                     <button class="btn btn-sm btn-outline-light" @onclick="Logout">Déconnexion</button>                

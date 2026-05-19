@@ -44,7 +44,8 @@ namespace Identity.API.Controllers
 
             var command = new UpdateUserProfileCommand(
                 userId.Value,
-                request.DisplayName,
+                request.FirstName,
+                request.LastName,
                 request.Bio,
                 request.PhoneNumber
             );

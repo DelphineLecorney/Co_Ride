@@ -5,7 +5,6 @@ using Shared.Contracts.Profile;
 
 namespace Blazor.Client.Pages.ProfilePages
 {
-
     public partial class ProfilePage : ComponentBase
     {
         [Inject] private ProfileService ProfileService { get; set; } = default!;

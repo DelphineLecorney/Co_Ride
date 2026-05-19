@@ -5,7 +5,8 @@ namespace Identity.Application.Commands.UpdateUserProfile
 {
     public record UpdateUserProfileCommand(
         Guid UserId,
-        string DisplayName,
+        string FirstName,
+        string LastName,
         string? Bio,
         string? PhoneNumber
     ) : IRequest<UserProfileDto>;

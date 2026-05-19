@@ -16,23 +16,38 @@ namespace Identity.Domain.Entities
         public string FullName => $"{FirstName} {LastName}";
         public string Initials => $"{(FirstName.Length > 0 ? FirstName[0] : ' ')}{(LastName.Length > 0 ? LastName[0] : ' ')}";
 
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; private set; } = false;
         public bool IsEmailVerified { get; set; } = false;
         public bool IsPhoneVerified { get; set; } = false;
 
-        public decimal ReputationScore { get; set; } = 0;
-        public int ReviewCount { get; set; } = 0;
+        public decimal ReputationScore { get; private set; } = 0;
+        public int ReviewCount { get; private set; } = 0;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastLoginAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        public UserProfile InitializeProfile(string displayName)
+        public void Delete()
         {
-            Profile = UserProfile.Create(Id, displayName, PhoneNumber);
-            return Profile;
+            IsDeleted = true;
+            DeletedAt = DateTime.UtcNow;
         }
 
-    }
+        public void UpdateReputation(decimal score, int reviewCount)
+        {
+            ReputationScore = score;
+            ReviewCount = reviewCount;
+        }
 
+        public void RecordLogin()
+        {
+            LastLoginAt = DateTime.UtcNow;
+        }
+
+        public UserProfile InitializeProfile()
+        {
+            Profile = UserProfile.Create(Id, FirstName, LastName, PhoneNumber);
+            return Profile;
+        }
+    }
 }

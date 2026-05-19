@@ -9,6 +9,6 @@ namespace Identity.Application.Commands.Register
         string LastName,
         string Email,
         string Password,
-        string? PhoneNumber
+        string PhoneNumber
     ) : IRequest<AuthResponse>;
 }

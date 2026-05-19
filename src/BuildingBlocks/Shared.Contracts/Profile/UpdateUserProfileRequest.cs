@@ -1,7 +1,8 @@
 ﻿namespace Shared.Contracts.Profile
 {
     public record UpdateUserProfileRequest(
-        string DisplayName,
+        string FirstName,
+        string LastName,
         string? Bio,
         string? PhoneNumber
     );

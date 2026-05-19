@@ -21,7 +21,7 @@ builder.Services.AddScoped<BookingService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ProfileService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-
+builder.Services.AddScoped<ProfileService>();
 
 builder.Services.AddScoped(sp => new HttpClient
 {

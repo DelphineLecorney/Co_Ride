@@ -2,7 +2,9 @@
 {
     public record UserProfileDto(
         Guid UserId,
-        string DisplayName,
+        string FirstName,
+        string LastName,
+        string FullName,
         string? Bio,
         string? AvatarUrl,
         string? PhoneNumber,

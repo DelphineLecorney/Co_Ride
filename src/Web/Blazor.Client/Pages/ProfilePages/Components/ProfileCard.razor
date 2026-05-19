@@ -4,18 +4,18 @@
     <div class="avatar">
         @if (!string.IsNullOrEmpty(Profile.AvatarUrl))
         {
-            <img src="@Profile.AvatarUrl" alt="Avatar de @Profile.DisplayName" />
+            <img src="@Profile.AvatarUrl" alt="Avatar de @Profile.FullName" />
         }
         else
         {
             <div class="avatar-placeholder">
-                @(!string.IsNullOrEmpty(Profile.DisplayName) ? Profile.DisplayName[0].ToString().ToUpper() : "?")
+                @(!string.IsNullOrEmpty(Profile.FullName) ? Profile.FullName[0].ToString().ToUpper() : "?")
             </div>
         }
     </div>
 
     <div class="profile-info">
-        <h2>@Profile.DisplayName</h2>
+        <h2>@Profile.FullName</h2>
 
         @if (!string.IsNullOrEmpty(Profile.Bio))
         {

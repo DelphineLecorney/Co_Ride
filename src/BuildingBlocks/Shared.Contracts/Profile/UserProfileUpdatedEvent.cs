@@ -2,9 +2,8 @@
 {
     public record UserProfileUpdatedEvent(
         Guid UserId,
-        string DisplayName,
-        string? Bio,
-        string? PhoneNumber,
+        string FirstName,
+        string LastName,
         string? AvatarUrl,
         DateTime UpdatedAt
     );

@@ -15,7 +15,7 @@ namespace Identity.Infrastructure.Configurations
             builder.Property(x => x.Id)
                 .ValueGeneratedNever();
 
-            builder.Property(x => x.DisplayName)
+            builder.Property(x => x.FullName)
                 .IsRequired()
                 .HasMaxLength(100);
 

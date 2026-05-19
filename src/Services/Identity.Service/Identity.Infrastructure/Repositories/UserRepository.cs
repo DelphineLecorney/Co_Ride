@@ -91,7 +91,7 @@ namespace Identity.Infrastructure.Repositories
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
             if (user != null)
             {
-                user.IsDeleted = true;
+                user.Delete();
                 user.DeletedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync(cancellationToken);
             }
