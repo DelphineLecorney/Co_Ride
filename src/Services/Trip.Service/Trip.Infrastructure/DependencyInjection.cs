@@ -1,9 +1,15 @@
-﻿using MediatR;
+﻿using Marten;
+using MassTransit;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Trip.Infrastructure.Messaging.Behaviors;
-using Trip.Infrastructure.TripInfraMarten;
 using Shared.Messaging;
+using Trip.Application.Interfaces;
+using Trip.Domain.ValueObjects;
+using Trip.Infrastructure.Consumers;
+using Trip.Infrastructure.Messaging.Behaviors;
+using Trip.Infrastructure.Repositories;
+using Trip.Infrastructure.TripInfraMarten;
 
 namespace Trip.Infrastructure;
 
@@ -22,6 +28,35 @@ public static class DependencyInjection
         // Behavior MediatR pour publier les événements de domaine
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(MartenEventPublisherBehavior<,>));
 
+        services.AddScoped<IDriverProfileRepository, DriverProfileRepository>();
+
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumer<UserProfileUpdatedConsumer>();
+
+            x.UsingRabbitMq((ctx, cfg) =>
+            {
+                cfg.Host(configuration["RabbitMQ:Host"], h =>
+                {
+                    h.Username(configuration["RabbitMQ:Username"]!);
+                    h.Password(configuration["RabbitMQ:Password"]!);
+                });
+
+                cfg.ReceiveEndpoint("trip-user-profile-updated", e =>
+                {
+                    e.ConfigureConsumer<UserProfileUpdatedConsumer>(ctx);
+                });
+            });
+        });
+
+        services.AddMarten(opts =>
+        {
+            opts.Connection(configuration.GetConnectionString("TripDb")!);
+
+            opts.Schema.For<DriverProfile>()
+                .Index(x => x.UserId, idx => idx.IsUnique = true);
+        })
+        .UseLightweightSessions();
         return services;
     }
 }

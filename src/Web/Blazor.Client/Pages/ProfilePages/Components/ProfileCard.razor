@@ -1,0 +1,39 @@
+﻿@using Shared.Contracts.Profile
+
+<div class="profile-card">
+    <div class="avatar">
+        @if (!string.IsNullOrEmpty(Profile.AvatarUrl))
+        {
+            <img src="@Profile.AvatarUrl" alt="Avatar de @Profile.FullName" />
+        }
+        else
+        {
+            <div class="avatar-placeholder">
+                @(!string.IsNullOrEmpty(Profile.FullName) ? Profile.FullName[0].ToString().ToUpper() : "?")
+            </div>
+        }
+    </div>
+
+    <div class="profile-info">
+        <h2>@Profile.FullName</h2>
+
+        @if (!string.IsNullOrEmpty(Profile.Bio))
+        {
+            <p class="bio">@Profile.Bio</p>
+        }
+
+        @if (!string.IsNullOrEmpty(Profile.PhoneNumber))
+        {
+            <p class="phone">📞 @Profile.PhoneNumber</p>
+        }
+
+        <small class="updated">
+            Mis à jour le @Profile.UpdatedAt.ToString("dd/MM/yyyy")
+        </small>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public UserProfileDto Profile { get; set; } = default!;
+}

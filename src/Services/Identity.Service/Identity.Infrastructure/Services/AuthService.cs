@@ -159,11 +159,8 @@ public class AuthService : IAuthService
                 LastName = request.LastName,
                 PhoneNumber = request.PhoneNumber,
                 CreatedAt = DateTime.UtcNow,
-                IsDeleted = false,
                 IsEmailVerified = false,
-                IsPhoneVerified = false,
-                ReputationScore = 0,
-                ReviewCount = 0
+                IsPhoneVerified = false
             };
 
             var result = await _userManager.CreateAsync(newUser, request.Password);

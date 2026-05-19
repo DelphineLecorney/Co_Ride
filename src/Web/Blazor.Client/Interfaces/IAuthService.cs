@@ -6,5 +6,6 @@ namespace Blazor.Client.Interfaces
     {
         Task<bool> Login(LoginRequest form);
         Task Logout();
+        Task<Guid> GetCurrentUserIdAsync();
     }
 }

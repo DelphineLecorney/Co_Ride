@@ -213,7 +213,7 @@ namespace Identity.Infrastructure.Migrations
                     b.Property<string>("ProviderKey")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderDisplayName")
+                    b.Property<string>("ProviderFullName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")

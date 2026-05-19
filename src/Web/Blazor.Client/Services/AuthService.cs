@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Shared.Contracts.DTOs.Identity;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace Blazor.Client.Services
 {
@@ -54,6 +55,22 @@ namespace Blazor.Client.Services
             _httpClient.DefaultRequestHeaders.Authorization = null;
 
             _navigationManager.NavigateTo("/login");
+        }
+
+        public async Task<Guid> GetCurrentUserIdAsync()
+        {
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity is null || !user.Identity.IsAuthenticated)
+                return Guid.Empty;
+
+            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier) ?? user.FindFirst("sub");
+
+            if (userIdClaim is null)
+                return Guid.Empty;
+
+            return Guid.TryParse(userIdClaim.Value, out var userId) ? userId : Guid.Empty;
         }
     }
 }
