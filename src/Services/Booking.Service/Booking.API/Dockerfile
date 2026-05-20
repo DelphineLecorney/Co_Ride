@@ -14,4 +14,3 @@ COPY --from=build /app .
 ENV ASPNETCORE_URLS=http://+:80
 
 ENTRYPOINT ["dotnet", "Booking.API.dll"]
-

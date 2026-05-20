@@ -37,9 +37,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Trip.Service", "Trip.Service", "{ED4FBE94-CFA3-4388-990F-F396CB366BB4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D2EEF483-52B4-4B5D-AAAD-215B5D882F1A}"
-	ProjectSection(SolutionItems) = preProject
-		src\Web\Blazor.Client\Dockerfile = src\Web\Blazor.Client\Dockerfile
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity.Service", "Identity.Service", "{90896360-2FCE-4679-9555-25B34BE6F012}"
 EndProject
