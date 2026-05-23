@@ -98,7 +98,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "�
 		.env = .env
 		.env.example = .env.example
 		.gitignore = .gitignore
-		docs\Del_Ride\00 - Vision\Contexte.md = docs\Del_Ride\00 - Vision\Contexte.md
 		docker-compose.override.yml = docker-compose.override.yml
 		docker-compose.yml = docker-compose.yml
 		README.md = README.md

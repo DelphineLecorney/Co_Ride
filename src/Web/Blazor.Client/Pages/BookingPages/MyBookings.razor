@@ -1,0 +1,20 @@
+﻿@page "/my-bookings"
+@attribute [Authorize]
+@inject BookingService BookingService
+@inject NavigationManager Nav
+
+<PageTitle>Mes réservations</PageTitle>
+
+<h2 class="mb-4">Mes réservations</h2>
+
+@if (_loading)
+{
+    <p>Chargement...</p>
+}
+else if (_bookings is null || !_bookings.Any())
+{
+    <div class="alert alert-info">
+        Aucune réservation pour le moment.
+        <a href="/searchTrips">Chercher un trajet</a>
+    </div>
+}
