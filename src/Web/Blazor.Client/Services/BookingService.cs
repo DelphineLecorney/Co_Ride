@@ -49,6 +49,7 @@ namespace Blazor.Client.Services
                 return null;
             }
         }
+
         public async Task<List<BookingDto>> GetMyBookingsAsync()
         {
             try
