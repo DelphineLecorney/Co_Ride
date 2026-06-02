@@ -10,23 +10,32 @@
             <h3 class="mb-4 text-center">Créer un compte</h3>
 
             <div class="card p-4 shadow-sm">
-                <input class="form-control mb-3" @bind="Email" placeholder="Email" />
-                <input class="form-control mb-3" @bind="Password" type="password" placeholder="Mot de passe" />
-                <input class="form-control mb-3" @bind="ConfirmPassword" type="password" placeholder="Confirmer le mot de passe" />
+                        <input class="form-control mb-3" @bind="LastName" placeholder="Nom" />
+                        <input class="form-control mb-3" @bind="FirstName" placeholder="Prénom" />               
+                        <input class="form-control mb-3" @bind="Email" placeholder="Email" />
+                        <input class="form-control mb-3" @bind="Password" type="password" placeholder="Mot de passe" />
+                        <input class="form-control mb-3" @bind="ConfirmPassword" type="password" placeholder="Confirmer le mot de passe" />
 
-                <button class="btn btn-primary w-100" @onclick="RegisterUser">Créer mon compte</button>
+                        <button class="btn btn-primary w-100" @onclick="RegisterUser">Créer mon compte</button>
 
-                @if (ErrorMessage is not null)
-                {
-                    <p class="text-danger mt-3 text-center">@ErrorMessage</p>
-                }
+                        @if (ErrorMessage is not null)
+                        {
+                            <p class="text-danger mt-3 text-center">@ErrorMessage</p>
+                        }
             </div>
+                
+            <p class="text-center mt-3">
+                Déjà un compte    ?
+                <NavLink href="/login">Se connecter</NavLink>
+            </p>
         </div>
-
 @code {
+    string FirstName = "";
+    string LastName = "";
     string Email = "";
     string Password = "";
     string ConfirmPassword = "";
+    string PhoneNumber = "";
     string? ErrorMessage;
 
     private async Task RegisterUser()
@@ -39,8 +48,12 @@
 
         var response = await Http.PostAsJsonAsync("auth/register", new RegisterRequest
         {
+            FirstName = FirstName,
+            LastName = LastName,
             Email = Email,
-            Password = Password
+            Password = Password,
+            ConfirmPassword = ConfirmPassword,
+            PhoneNumber = PhoneNumber
         });
 
         if (!response.IsSuccessStatusCode)

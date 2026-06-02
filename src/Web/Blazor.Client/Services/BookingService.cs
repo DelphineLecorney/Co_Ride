@@ -50,6 +50,20 @@ namespace Blazor.Client.Services
             }
         }
 
+        public async Task<List<BookingDto>> GetMyBookingsAsync()
+        {
+            try
+            {
+                return await _httpClient.GetFromJsonAsync<List<BookingDto>>("api/bookings/my")
+                       ?? new List<BookingDto>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erreur lors de la récupération des réservations");
+                return new List<BookingDto>();
+            }
+        }
+
         public async Task<bool> CancelBookingAsync(Guid bookingId)
         {
             try

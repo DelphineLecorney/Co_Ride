@@ -153,6 +153,8 @@ services:
     depends_on:
       sqlserver:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
       seq:
         condition: service_started
     networks:

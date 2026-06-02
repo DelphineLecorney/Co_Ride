@@ -1,0 +1,51 @@
+﻿@page "/booking{BookingId:guid}"
+
+<PageTitle>Détails de la réservation</PageTitle>
+
+<h2 class="mb-4">Détails</h2>
+
+@if(_loading)
+{
+    <p>Chargement...</p>
+}
+else if (_booking is null)
+{
+    <p class="text-danger">
+        Réservation introuvable.
+    </p>
+}
+else
+{
+    <div class="card shadow-sm" style="max-width: 600px; margin: auto;">
+        
+        <div class="card-header d-flex justify-content-between">
+            <h4>Réservation</h4>
+            <span class="badge @GetStatusBadge(_booking.Status)">
+                @_booking.Status
+            </span>
+        </div>
+
+        <div class="card-body">
+            @if (_trip is not null)
+            {
+                <p>🗺️ <strong>@_trip.FromCity → @_trip.ToCity</strong></p>
+                <p>📅 @_trip.DepartureTime.ToString("dd/MM/yyyy HH:mm")</p>
+                <p>🚗 Conducteur : @_trip.DriverName</p>
+                <p>💶 Prix/place : @_trip.PricePerSeat.ToString("C")</p>
+            }
+            <hr />
+
+            <p>💺 Places réservées : <strong>@_booking.SeatsBooked</strong></p>
+            <p>💶 Total payé : <strong>@_booking.TotalPrice.ToString("C")</strong></p>
+            <p>📋 Réservé le @_booking.CreatedAt.ToString("dd/MM/yyyy")</p>
+        </div>
+
+        <div class="card-footer d-flex gap-2">
+            <button class="btn btn-outline-secondary"
+                    @onclick="Cancel">
+                Annuler la réservation
+            </button>
+            }
+        </div>
+    </div>
+}

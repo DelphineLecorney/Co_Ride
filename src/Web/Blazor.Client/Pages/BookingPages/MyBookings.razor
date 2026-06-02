@@ -1,0 +1,60 @@
+﻿@page "/my-bookings"
+
+<PageTitle>Mes réservations</PageTitle>
+
+<h2 class="mb-4">Mes réservations</h2>
+
+@if (_loading)
+{
+    <p>Chargement...</p>
+}
+else if (!_items.Any())
+{
+    <div class="alert alert-info">
+        Aucune réservation pour le moment.
+        <a href="/searchTrips">Chercher un trajet</a>
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var (booking, trip) in _items)
+        {
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="card-title">
+                                @(trip?.FromCity ?? "?") → @(trip?.ToCity ?? "?")
+                            </h5>
+                            <span class="badge @GetStatusBadge(booking.Status)">
+                                @booking.Status
+                            </span>
+                        </div>
+                        <p class="text-muted">
+                             @(trip?.DepartureTime.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                        </p>
+                        <p>
+                             @booking.SeatsBooked place(s) —
+                             @booking.TotalPrice.ToString("C")
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex gap-2">
+                        <button class="btn btn-sm btn-outline-primary"
+                                @onclick="@(() => NavigationManager.NavigateTo($"/booking/{booking.Id}"))">
+                            Détails
+                        </button>
+
+                        @if (booking.Status is "Pending" or "Confirmed")
+                        {
+                            <button class="btn btn-sm btn-outline-danger"
+                                    @onclick="() => Cancel(booking.Id)">
+                                Annuler
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

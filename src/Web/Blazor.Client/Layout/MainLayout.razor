@@ -5,55 +5,57 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IAuthService AuthService
 @inject NavigationManager NavigationManager
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
-
     <main>
-        @code {
-            private bool IsAuthenticated;
-            private string? FullName = "Utilisateur inconnu 🤭";
-
-            protected override async Task OnInitializedAsync()
-            {
-                var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                var user = authState.User;
-
-                IsAuthenticated = user.Identity?.IsAuthenticated ?? false;
-
-                if (IsAuthenticated)
-                    FullName = user.Identity?.Name;
-            }
-
-            private async Task Logout()
-            {
-                await AuthService.Logout();
-                NavigationManager.NavigateTo("/");
-            }
-        }
-
         <div class="top-row px-4 d-flex justify-content-between align-items-center">
-
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-
-            <div>
-                <span class="me-3">Bonjour @FullName et Bienvenue sur CoRide</span>
+            <a href="https://github.com/DelphineLecorney/Co_Ride" target="_blank">Voir le code</a>
+            <div class="d-flex align-items-center gap-2">
                 @if (IsAuthenticated)
-                {                   
-                    <button class="btn btn-sm btn-outline-light" @onclick="Logout">Déconnexion</button>                
+                {
+                    <span class="me-2">Bonjour @FullName</span>
+                    <button class="btn btn-sm btn-outline-light" @onclick="Logout">
+                        Déconnexion
+                    </button>
                 }
                 else
                 {
-                    <NavLink class="btn btn-sm btn-primary" href="login">Connexion</NavLink>
+                    <NavLink class="btn btn-sm btn-outline-light" href="login">
+                        Connexion
+                    </NavLink>
+                    <NavLink class="btn btn-sm btn-primary" href="register">
+                        Inscription
+                    </NavLink>
                 }
             </div>
-
         </div>
-
-
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+@code {
+    private bool IsAuthenticated;
+    private string FullName = "Utilisateur inconnu 🤭";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        IsAuthenticated = user.Identity?.IsAuthenticated ?? false;
+
+        if (IsAuthenticated)
+            FullName = user.Identity?.Name ?? "Utilisateur inconnu 🤭";
+    }
+
+    private async Task Logout()
+    {
+        await AuthService.Logout();
+        NavigationManager.NavigateTo("/");
+    }
+}

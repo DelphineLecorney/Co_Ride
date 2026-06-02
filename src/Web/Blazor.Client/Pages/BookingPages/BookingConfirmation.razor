@@ -1,0 +1,57 @@
+﻿@page "/booking/confirm/{TripId:guid}"
+
+<PageTitle>Confirmer la réservation</PageTitle>
+
+<div class="card shadow-sm" style="max-width: 500px; margin: auto;">
+    <div class="card-header">
+        <h4>Confirmer votre réservation</h4>
+    </div>
+    <div class="card-body">
+        @if (_trip is not null)
+        {
+            <div class="alert alert-light mb-3">
+                <p>🗺️ <strong>@_trip.FromCity → @_trip.ToCity</strong></p>
+                <p>📅 @_trip.DepartureTime.ToString("dd/MM/yyyy HH:mm")</p>
+                <p>💶 @_trip.PricePerSeat.ToString("C") / place</p>
+                <p>💺 Places disponibles : @_trip.AvailableSeats</p>
+            </div>
+        }
+
+        <div class="mb-3">
+            <label class="form-label">Nombre de places</label>
+            <input type="number"
+                   class="form-control"
+                   @bind="_seats"
+                   min="1"
+                   max="@(_trip?.AvailableSeats ?? 1)" />
+        </div>
+
+        @if (_trip is not null)
+        {
+            <p class="fw-bold">
+                Total : @((_seats * _trip.PricePerSeat).ToString("C"))
+            </p>
+        }
+
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <p class="text-danger">@_errorMessage</p>
+        }
+
+        @if (_success)
+        {
+            <div class="alert alert-success">✅ Réservation confirmée !</div>
+        }
+    </div>
+    <div class="card-footer d-flex gap-2">
+        <button class="btn btn-outline-secondary"
+                @onclick='() => NavigationManager.NavigateTo($"/trip/{TripId}")'>
+            Annuler
+        </button>
+        <button class="btn btn-primary"
+                @onclick="Confirm"
+                disabled="@_loading">
+            @(_loading ? "En cours..." : "Confirmer")
+        </button>
+    </div>
+</div>
