@@ -32,11 +32,11 @@ else
                             </span>
                         </div>
                         <p class="text-muted">
-                             @(trip?.DepartureTime.ToString("dd/MM/yyyy HH:mm") ?? "-")
+                            📅 @(trip?.DepartureTime.ToString("dd/MM/yyyy HH:mm") ?? "-")
                         </p>
                         <p>
-                             @booking.SeatsBooked place(s) —
-                             @booking.TotalPrice.ToString("C")
+                            💺 @booking.SeatsBooked place(s) —
+                            💶 @booking.TotalPrice.ToString("C")
                         </p>
                     </div>
                     <div class="card-footer d-flex gap-2">
@@ -45,10 +45,18 @@ else
                             Détails
                         </button>
 
+                        @if (booking.Status == "Completed" && trip is not null)
+                        {
+                            <button class="btn btn-sm btn-warning"
+                                    @onclick="@(() => NavigationManager.NavigateTo($"/review/create/{booking.TripId}/{trip.DriverId}"))">
+                                ⭐ Évaluer
+                            </button>
+                        }
+
                         @if (booking.Status is "Pending" or "Confirmed")
                         {
                             <button class="btn btn-sm btn-outline-danger"
-                                    @onclick="() => Cancel(booking.Id)">
+                                    @onclick="@(() => Cancel(booking.Id))">
                                 Annuler
                             </button>
                         }

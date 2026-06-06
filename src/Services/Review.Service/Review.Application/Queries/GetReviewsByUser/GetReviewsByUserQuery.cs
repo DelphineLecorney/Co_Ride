@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿
+using MediatR;
 using Shared.Contracts.DTOs.Review;
 
 namespace Review.Application.Queries.GetReviewsByUser

@@ -1,0 +1,58 @@
+﻿@page "/review/create/{TripId:guid}/{RevieweeId:guid}"
+
+<PageTitle>Laisser un avis</PageTitle>
+
+<div class="card shadow-sm" style="max-width: 500px; margin: auto;">
+    <div class="card-header">
+        <h4>Laisser un avis</h4>
+    </div>
+    <div class="card-body">
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">Note</label>
+            <div class="d-flex gap-2 fs-3">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    var star = i;
+                    <span @onclick="() => _rating = star"
+                          style="cursor:pointer; color: @(star <= _rating ? "#ffc107" : "#ccc")">
+                        ★
+                    </span>
+                }
+            </div>
+            <small class="text-muted">@GetRatingLabel()</small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Commentaire (optionnel)</label>
+            <textarea class="form-control"
+                      @bind="_comment"
+                      rows="4"
+                      maxlength="1000"
+                      placeholder="Décrivez votre expérience...">
+            </textarea>
+            <small class="text-muted">@(_comment?.Length ?? 0) / 1000</small>
+        </div>
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <div class="alert alert-danger">@_errorMessage</div>
+        }
+
+        @if (_success)
+        {
+            <div class="alert alert-success">✅ Avis envoyé ! Merci.</div>
+        }
+
+    </div>
+    <div class="card-footer d-flex gap-2">
+        <button class="btn btn-outline-secondary"
+                @onclick='() => NavigationManager.NavigateTo("/my-bookings")'>
+            Annuler
+        </button>
+        <button class="btn btn-primary"
+                @onclick="Submit"
+                disabled="@(_loading || _rating == 0)">
+            @(_loading ? "Envoi..." : "Envoyer l'avis")
+        </button>
+    </div>
+</div>
